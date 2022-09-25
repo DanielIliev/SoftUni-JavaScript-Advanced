@@ -71,23 +71,17 @@ function numbers(entry) {
             biggerThanAverage.push(numbersArray[index]);
         }
     }
+    biggerThanAverage.sort((a, b) => b - a);
     if (biggerThanAverage.length == 0) {
         console.log('No');
+    } else if (biggerThanAverage.length <= 5) {
+        console.log(biggerThanAverage.join(' '));
     } else {
-        let reversed = biggerThanAverage.reverse();
-        if (reversed.length <= 5) {
-            console.log(reversed.join(' '));
-        } else {
-            let numbersString = [];
-            for (let index = 0; index < reversed.length; index++) {
-                if (index < 5) {
-                    numbersString.push(reversed[index]);
-                } else {
-                    break;
-                }
-            }
-            console.log(numbersString.join(' '));
+        let firstFiveNumbers = [];
+        for (let index = 0; index < 5; index++) {
+            firstFiveNumbers.push(biggerThanAverage[index]);
         }
+        console.log(firstFiveNumbers.join(' '));
     }
 }
 numbers('5 2 3 4 -10 30 40 50 20 50 60 60 51');
