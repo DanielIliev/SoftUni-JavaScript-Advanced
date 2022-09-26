@@ -80,21 +80,21 @@ simpleCalculator(5, 2, 'multiply');
 // Task 6
 function signCheck(num1, num2, num3) {
     let isPositive = true;
-    if (num1 > 0 && num2 > 0 && num3 > 0) { // All positive
+    if (num1 > 0 && num2 > 0 && num3 > 0) {
         isPositive = true;
-    } else if (num1 < 0 && num2 < 0 && num3 < 0) { // All negative
+    } else if (num1 < 0 && num2 < 0 && num3 < 0) {
         isPositive = false;
-    } else if (num1 > 0 && num2 > 0 && num3 < 0) { // 3 negative
+    } else if (num1 > 0 && num2 > 0 && num3 < 0) {
         isPositive = false;
-    } else if (num1 > 0 && num2 < 0 && num3 < 0) { // 2 & 3 negative
+    } else if (num1 > 0 && num2 < 0 && num3 < 0) {
         isPositive = true;
-    } else if (num1 < 0 && num2 > 0 && num3 > 0) { // 1 negative
+    } else if (num1 < 0 && num2 > 0 && num3 > 0) {
         isPositive = false;
-    } else if (num1 < 0 && num2 > 0 && num3 < 0) { // 1 & 3 negative
+    } else if (num1 < 0 && num2 > 0 && num3 < 0) {
         isPositive = true;
-    } else if (num1 < 0 && num2 < 0 && num3 > 0) { // 1 & 2 negative
+    } else if (num1 < 0 && num2 < 0 && num3 > 0) {
         isPositive = true;
-    } else if (num1 > 0 && num2 < 0 && num3 > 0) { // 2 negative
+    } else if (num1 > 0 && num2 < 0 && num3 > 0) {
         isPositive = false;
     }
 
