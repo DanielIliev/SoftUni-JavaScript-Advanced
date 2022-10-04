@@ -34,21 +34,30 @@ function counterStrike(commands) {
 //     "73",
 //     "10"
 // ]);
-counterStrike(["200",
-"54",
-"14",
-"End of battle",
-"28",
-"13",
-"End of battle"]);
+// counterStrike(["200",
+// "54",
+// "14",
+// "28",
+// "13",
+// "End of battle"]);
 
+// Still working on the below
 // function shootToWin(commands) {
 //     let actions = commands;
 //     let targets = actions[0].split(' ');
 //     actions.shift();
+//     let currentTarget = 0;
 //     for (let index = 0; index < actions.length; index++) {
-        
+//         if (actions[index] == 'End') {
+//             break;
+//         }
+//         currentTarget = Number(actions[index]);
+//         if (currentTarget >= 0 && currentTarget < targets.length) {
+//             targets[currentTarget] = -1;
+//             targets = decreaseTargets(targets, currentTarget);
+//         }
 //     }
+//     console.log(targets);
 // }
 // shootToWin(["24 50 36 70",
 //     "0",
