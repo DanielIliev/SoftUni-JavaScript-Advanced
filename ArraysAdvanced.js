@@ -97,12 +97,12 @@ function guestList(commands) {
 // ]);
 
 function sortMaxMin(valuesArray) {
-    let values = valuesArray.map((a) => {return parseInt(a)});
+    let values = valuesArray.map((a) => { return parseInt(a) });
     let sorted = [];
-    let sortMin = (a,b) => {
+    let sortMin = (a, b) => {
         return a - b;
     }
-    let sortMax = (a,b) => {
+    let sortMax = (a, b) => {
         return b - a;
     }
     while (values.length > 0) {
@@ -118,7 +118,52 @@ function sortMaxMin(valuesArray) {
 // sortMaxMin([34, 2, 32, 45, 690, 6, 32, 7, 19, 47]);
 
 function sortingByCriteria(values) {
-    values.sort().sort((a,b) => a.length - b.length);
+    values.sort().sort((a, b) => a.length - b.length);
     console.log(values.join('\n'));
 }
 // sortingByCriteria(['test', 'Deny', 'omen', 'Default']);
+
+// More work required below
+// function bombNumbers(valuesArray, specialArray) {
+//     let values = valuesArray;
+//     let special = specialArray;
+//     for (let index = 0; index < values.length; index++) {
+//         if (values[index] == special[0]) {
+//             values.splice(index, 1);
+//             for (let left = index; left > index - special[1]; left--) {
+//                 values.splice(left, 1);
+//             }
+//             for (let right = index; right <= index + special[1]; right++) {
+//                 values.splice(right, 1);
+//             }
+//         }
+//     }
+//     console.log(values.join(' '));
+// }
+// bombNumbers(
+//     [1, 2, 2, 4, 2, 2, 2, 9],
+//     [4, 2]
+// );
+
+function searchNumber(arr1, arr2) {
+    let elements = arr1;
+    let elementsToTake = arr2[0];
+    let elementsToDelete = arr2[1];
+    let elementToSearch = arr2[2];
+    let takenElements = [];
+    for (let index = 0; index < elementsToTake; index++) {
+        takenElements.push(elements[index]);
+    }
+    for (let index = 0; index < elementsToDelete; index++) {
+        takenElements.shift();
+    }
+    let timesFound = 0;
+    for (let index = 0; index < takenElements.length; index++) {
+        if (takenElements[index] == elementToSearch) timesFound++;
+    }
+    console.log(`Number ${elementToSearch} occurs ${timesFound} times.`)
+}
+// searchNumber(
+//     [7, 1, 5, 8, 2, 7],
+//     [3, 1, 5]
+// );
