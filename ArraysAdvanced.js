@@ -123,23 +123,29 @@ function sortingByCriteria(values) {
 }
 // sortingByCriteria(['test', 'Deny', 'omen', 'Default']);
 
-// More work required below
-// function bombNumbers(valuesArray, specialArray) {
-//     let values = valuesArray;
-//     let special = specialArray;
-//     for (let index = 0; index < values.length; index++) {
-//         if (values[index] == special[0]) {
-//             values.splice(index, 1);
-//             for (let left = index; left > index - special[1]; left--) {
-//                 values.splice(left, 1);
-//             }
-//             for (let right = index; right <= index + special[1]; right++) {
-//                 values.splice(right, 1);
-//             }
-//         }
-//     }
-//     console.log(values.join(' '));
-// }
+// Task partially works 60/100
+function bombNumbers(valuesArray, specialArray) {
+    let values = valuesArray;
+    let special = specialArray;
+    let splitArray = [];
+    for (let index = 0; index < values.length; index++) {
+        if (values[index] == special[0]) {
+            splitArray = values.splice(0, values.indexOf(special[0]));
+        }
+    }
+    let power = special[1];
+    splitArray.reverse();
+    for (let index = 0; index < power; index++) {
+        splitArray.splice(0, 1);
+    }
+    for (let index = 0; index < power + 1; index++) {
+        values.splice(0, 1);
+    }
+    let joinedArray = splitArray.concat(values);
+    let total = 0;
+    for (let index = 0; index < joinedArray.length; index++) total += joinedArray[index];
+    console.log(total);
+}
 // bombNumbers(
 //     [1, 2, 2, 4, 2, 2, 2, 9],
 //     [4, 2]
