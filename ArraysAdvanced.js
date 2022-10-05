@@ -87,70 +87,38 @@ function guestList(commands) {
 // guestList(['Allie is going!',
 //     'George is going!',
 //     'John is not going!',
-//     'George is not going!'
+//     'George is not going!' qweqwe
 // ]);
 // guestList(['Tom is going!',
 //     'Annie is going!',
 //     'Tom is going!',
-//     'Garry is going!',
+//     'Garry is going!', sdfsdf
 //     'Jerry is going!'
 // ]);
 
-// Needs more work
-function sorting(arr) {
-    let elements = arr;
+function sortMaxMin(valuesArray) {
+    let values = valuesArray.map((a) => {return parseInt(a)});
     let sorted = [];
-    let maxAndMin = function (elements) {
-        let maximum = minimum = 0;
-        for (let index = 0; index < elements.length; index++) {
-            let current = Number(elements[index]);
-            if (current > maximum) {
-                maximum = current;
-            }
-        }
-        minimum = maximum;
-        for (let index = 0; index < elements.length; index++) {
-            let current = Number(elements[index]);
-            if (minimum > current) {
-                minimum = current;
-            }
-        }
-        return [maximum, minimum];
+    let sortMin = (a,b) => {
+        return a - b;
     }
-    let removeCurrentMaxMin = function (elements, max, min) {
-        for (let index = 0; index < elements.length; index++) {
-            if (elements[index] == max) {
-                elements.splice(index, 1);
-            } else if (elements[index] == min) {
-                elements.splice(index, 1);
-            }
-        }
-        return elements;
+    let sortMax = (a,b) => {
+        return b - a;
     }
-    for (let index = 0; index < elements.length; index++) {
-        let currentMaxMin = maxAndMin(elements);
-        let max = currentMaxMin[0];
-        let min = currentMaxMin[1];
-        elements = removeCurrentMaxMin(elements, max, min);
-        sorted.push(max);
-        sorted.push(min);
-        if (elements.length == 2) {
-            if (elements[0] > elements[1]) {
-                sorted.push(elements[0]);
-                sorted.push(elements[1]);
-            } else {
-                sorted.push(elements[1]);
-                sorted.push(elements[0]);
-            }
-        }
+    while (values.length > 0) {
+        values.sort(sortMax);
+        sorted.push(values[0]);
+        values.shift();
+        values.sort(sortMin);
+        sorted.push(values[0]);
+        values.shift();
     }
     console.log(sorted.join(' '));
 }
-// sorting([1, 21, 3, 52, 69, 63, 31, 2, 18, 94]);
-// sorting([34, 2, 32, 45, 690, 6, 32, 7, 19, 47]);
+// sortMaxMin([34, 2, 32, 45, 690, 6, 32, 7, 19, 47]);
 
 function sortingByCriteria(values) {
     values.sort().sort((a,b) => a.length - b.length);
     console.log(values.join('\n'));
 }
-sortingByCriteria(['test', 'Deny', 'omen', 'Default']);
+// sortingByCriteria(['test', 'Deny', 'omen', 'Default']);
