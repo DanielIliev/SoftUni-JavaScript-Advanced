@@ -96,6 +96,7 @@ function guestList(commands) {
 //     'Jerry is going!'
 // ]);
 
+// Needs more work
 function sorting(arr) {
     let elements = arr;
     let sorted = [];
@@ -116,7 +117,7 @@ function sorting(arr) {
         }
         return [maximum, minimum];
     }
-    let removeCurrentMaxMin = function(elements, max, min) {
+    let removeCurrentMaxMin = function (elements, max, min) {
         for (let index = 0; index < elements.length; index++) {
             if (elements[index] == max) {
                 elements.splice(index, 1);
@@ -146,4 +147,10 @@ function sorting(arr) {
     console.log(sorted.join(' '));
 }
 // sorting([1, 21, 3, 52, 69, 63, 31, 2, 18, 94]);
-sorting([34, 2, 32, 45, 690, 6, 32, 7, 19, 47]);
+// sorting([34, 2, 32, 45, 690, 6, 32, 7, 19, 47]);
+
+function sortingByCriteria(values) {
+    values.sort().sort((a,b) => a.length - b.length);
+    console.log(values.join('\n'));
+}
+sortingByCriteria(['test', 'Deny', 'omen', 'Default']);
