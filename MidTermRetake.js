@@ -41,28 +41,76 @@ function counterStrike(commands) {
 // "13",
 // "End of battle"]);
 
-// Still working on the below
-// function shootToWin(commands) {
-//     let actions = commands;
-//     let targets = actions[0].split(' ');
-//     actions.shift();
-//     let currentTarget = 0;
-//     for (let index = 0; index < actions.length; index++) {
-//         if (actions[index] == 'End') {
-//             break;
-//         }
-//         currentTarget = Number(actions[index]);
-//         if (currentTarget >= 0 && currentTarget < targets.length) {
-//             targets[currentTarget] = -1;
-//             targets = decreaseTargets(targets, currentTarget);
-//         }
-//     }
-//     console.log(targets);
-// }
-// shootToWin(["24 50 36 70",
-//     "0",
-//     "4",
-//     "3",
-//     "1",
-//     "End"
-// ]);
+
+function shootToWin(commands) {
+
+    // Taking the array of targets and remove it from the main array
+    let targets = commands[0].split(' ');
+    commands.shift();
+
+    // Parsing the targets as integers for correct calculations
+    targets = targets.map((a) => parseInt(a));
+
+    let shots = [];
+    let successfulShots = 0;
+
+    // Fetch all the shots taken
+    for (let index = 0; index < commands.length; index++) {
+        if (commands[index] == 'End') {
+            break;
+        } else {
+            shots.push(commands[index]);
+        }
+    }
+
+    for (let index = 0; index < shots.length; index++) {
+        let shotId = isAValidShot(targets, shots[index]);
+        if (shotId != -1) {
+            successfulShots++;
+            targets = processShot(targets, shotId);
+        }
+    }
+
+    // Print the targets values after the taken shots
+    console.log(`Shot targets: ${successfulShots} -> ${targets.join(' ')}`);
+
+    function isAValidShot(targetsArray, currentShot) {
+        let targetId = -1;
+        for (let index = 0; index < targetsArray.length; index++) {
+            if (currentShot == index) {
+                targetId = index;
+            }
+        }
+        return targetId;
+    }
+
+    function processShot(targetsArray, targetId) {
+        let targets = targetsArray;
+        let targetValue = targetsArray[targetId];
+        for (let index = 0; index < targets.length; index++) {
+            if (targetId == index) {
+                targetsArray[index] = -1;
+            }
+            if (targetValue < targets[index] && targets[index] != -1) {
+                targets[index] -= targetValue;
+            } else if (targetValue >= targets[index] && targets[index] != -1) {
+                targets[index] += targetValue;
+            }
+        }
+        return targets;
+    }
+
+}
+shootToWin(["24 50 36 70",
+    "0",
+    "4",
+    "3",
+    "1",
+    "End"
+]);
+// shootToWin((["30 30 12 60 54 66",
+// "5",
+// "2",
+// "4",
+// "0",
+// "End"]));
