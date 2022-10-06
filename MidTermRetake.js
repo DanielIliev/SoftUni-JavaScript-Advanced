@@ -1,28 +1,38 @@
 function counterStrike(commands) {
     let actions = commands;
+
+    // Taking the initial energy value and removing it from the main array
     let energy = Number(actions[0]);
-    let wins = 0;
     actions.shift();
+
+    let wins = 0;
+
     for (let index = 0; index < actions.length; index++) {
+
         if (actions[index] == 'End of battle') {
             console.log(`Won battles: ${wins}. Energy left: ${energy}`);
             break;
         }
-        if (energy - Number(actions[index]) >= 0) {
-            energy -= Number(actions[index]);
+
+        let currentEnergyLost = Number(actions[index]);
+
+        if (energy - currentEnergyLost >= 0) {
+            energy -= currentEnergyLost;
             wins++;
-        } else if (energy - Number(actions[index]) < 0) {
+        } else if (energy - currentEnergyLost < 0) {
             console.log(`Not enough energy! Game ends with ${wins} won battles and ${energy} energy`);
             break;
-        } else if (energy - Number(actions[index]) == 0) {
-            energy -= Number(actions[index]);
+        } else if (energy - currentEnergyLost == 0) {
+            energy -= currentEnergyLost;
             console.log(`Not enough energy! Game ends with ${wins} won battles and ${energy} energy`);
             break;
         }
+
         if (wins % 3 == 0) {
             energy += wins;
         }
     }
+
 }
 // counterStrike(["100",
 //     "10",
@@ -101,16 +111,22 @@ function shootToWin(commands) {
     }
 
 }
-shootToWin(["24 50 36 70",
-    "0",
-    "4",
-    "3",
-    "1",
-    "End"
-]);
+
+// shootToWin(["24 50 36 70",
+//     "0",
+//     "4",
+//     "3",
+//     "1",
+//     "End"
+// ]);
 // shootToWin((["30 30 12 60 54 66",
 // "5",
 // "2",
 // "4",
 // "0",
 // "End"]));
+
+function movingTarget() {
+
+}
+movingTarget();
