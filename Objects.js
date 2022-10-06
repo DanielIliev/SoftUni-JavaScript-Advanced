@@ -253,3 +253,57 @@ function inventory(heroesEntries) {
 //     'Derek / 12 / BarrelVest, DestructionSword',
 //     'Hes / 1 / Desolator, Sentinel, Antara'
 // ]);
+
+function dictionary(entries) {
+    const wordTemplate = {
+        name: '',
+        description: ''
+    }
+
+    // let test = entries.map(JSON.parse);
+    // let test2 = Object.entries(test);
+    
+    let words = [];
+
+    for (let index = 0; index < entries.length; index++) {
+        
+    }
+
+    
+    // for (let index = 0; index < entries.length; index++) {
+    //     if (checkIfWordExists != -1) {
+    //         // addWordToDictionary(entries[index]);
+    //         console.log(entries[index]);
+    //     } else {
+    //         console.log('Add the new description');
+    //     }
+    // }
+
+    // Print the dictionary sorted alphabetically
+
+    function checkIfWordExists(wordsArray, word) {
+        let wordId = -1;
+        for (let index = 0; index < wordsArray.length; index++) {
+            if (wordsArray[index].name == word) {
+                wordId = index;
+            }
+        }
+
+        return wordId;
+    }
+
+    function addWordToDictionary(wordString) {
+        
+    }
+
+    function sortAlphabetically(wordsArray) {
+
+    }
+}
+dictionary([
+    '{"Coffee":"A hot drink made from the roasted and ground seeds (coffee beans) of a tropical shrub."}',
+    '{"Bus":"A large motor vehicle carrying passengers by road, typically one serving the public on a fixed route and for a fare."}',
+    '{"Boiler":"A fuel-burning apparatus or container for heating water."}',
+    '{"Tape":"A narrow strip of material, typically used to hold or fasten something."}',
+    '{"Microphone":"An instrument for converting sound waves into electrical energy variations which may then be amplified, transmitted, or recorded."}'
+]);
