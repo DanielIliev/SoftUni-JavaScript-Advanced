@@ -124,32 +124,54 @@ function sortingByCriteria(values) {
 // sortingByCriteria(['test', 'Deny', 'omen', 'Default']);
 
 // Task partially works 60/100
-function bombNumbers(valuesArray, specialArray) {
-    let values = valuesArray;
-    let special = specialArray;
-    let splitArray = [];
-    for (let index = 0; index < values.length; index++) {
-        if (values[index] == special[0]) {
-            splitArray = values.splice(0, values.indexOf(special[0]));
+function bombNumbers(numbers, specialArray) {
+    // Fetch the values array
+    let numbersArray = numbers;
+    // Fetch the special number with their power
+    let specialNumber = specialArray[0];
+    let specialNumberPower = specialArray[1];
+
+    for (let index = 0; index < numbersArray.length; index++) {
+        if (numbersArray[index] == specialNumber) {
+            for (let index1 = 1; index1 <= specialNumberPower; index1++) {
+                if (index - index1 < 0) {
+                    break;
+                } else {
+                    numbersArray[index - index1] = 0;
+                }
+            }
+            for (let index1 = 1; index1 <= specialNumberPower; index1++) {
+                if (index + index1 > numbersArray.length) {
+                    break;
+                } else {
+                    numbersArray[index + index1] = 0;
+                }
+            }
+            numbersArray[index] = 0;
         }
     }
-    let power = special[1];
-    splitArray.reverse();
-    for (let index = 0; index < power; index++) {
-        splitArray.splice(0, 1);
-    }
-    for (let index = 0; index < power + 1; index++) {
-        values.splice(0, 1);
-    }
-    let joinedArray = splitArray.concat(values);
-    let total = 0;
-    for (let index = 0; index < joinedArray.length; index++) total += joinedArray[index];
-    console.log(total);
+
+    let sum = numbersArray.reduce((a,b) => a+b);
+    console.log(sum);
+
 }
-// bombNumbers(
-//     [1, 2, 2, 4, 2, 2, 2, 9],
-//     [4, 2]
-// );
+bombNumbers(
+    [1, 4, 4, 2, 8, 9, 1],
+[9, 3]
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function searchNumber(arr1, arr2) {
     let elements = arr1;
