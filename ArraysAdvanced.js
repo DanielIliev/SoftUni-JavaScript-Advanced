@@ -1,28 +1,42 @@
 function train(data) {
     let wagons = data[0].split(' ');
     data.shift();
+
     let maxWagonCapacity = Number(data[0]);
     data.shift();
-    let addWagon = function (passengers) {
-        wagons.push(passengers);
-    }
+
     for (let index = 0; index < data.length; index++) {
         if (data[index].includes('Add')) {
+
             let current = data[index].split(' ');
-            addWagon(Number(current[1]));
+            wagons = addWagon(wagons, Number(current[1]));
+
         } else {
             let passengersToBeSeated = Number(data[index]);
+
             for (let index1 = 0; index1 < wagons.length; index1++) {
+
                 let currentWagon = Number(wagons[index1]);
+
                 if ((passengersToBeSeated + currentWagon) <= maxWagonCapacity) {
+
                     wagons[index1] = currentWagon + passengersToBeSeated;
                     break;
+
                 }
             }
 
         }
     }
+
     console.log(wagons.join(' '));
+
+    function addWagon(wagonsArray, passengersCount) {
+
+        wagonsArray.push(passengersCount);
+
+        return wagonsArray;
+    }
 }
 // train(['32 54 21 12 4 0 23',
 //     '75',
@@ -58,7 +72,7 @@ function guestList(commands) {
                 list.push(guestName);
             } else {
                 for (let index1 = 0; index1 < list.length; index1++) {
-                    if (list[index1] == guestName) {
+                    if (list.includes(guestName)) {
                         console.log(`${guestName} is already in the list!`);
                         break;
                     } else {
@@ -89,41 +103,36 @@ function guestList(commands) {
 //     'John is not going!',
 //     'George is not going!' qweqwe
 // ]);
-// guestList(['Tom is going!',
-//     'Annie is going!',
-//     'Tom is going!',
-//     'Garry is going!', sdfsdf
-//     'Jerry is going!'
-// ]);
+guestList(['Tom is going!',
+    'Annie is going!',
+    'Tom is going!',
+    'Garry is going!',
+    'Jerry is going!'
+]);
 
 function sortMaxMin(valuesArray) {
-    let values = valuesArray.map((a) => { return parseInt(a) });
+    let values = valuesArray.map((a) => Number(a));
     let sorted = [];
-    let sortMin = (a, b) => {
-        return a - b;
-    }
-    let sortMax = (a, b) => {
-        return b - a;
-    }
+
+    values.sort((a, b) => a - b);
+
     while (values.length > 0) {
-        values.sort(sortMax);
-        sorted.push(values[0]);
-        values.shift();
-        values.sort(sortMin);
-        sorted.push(values[0]);
-        values.shift();
+        sorted.push(values.pop());
+        sorted.push(values.shift());
     }
+
     console.log(sorted.join(' '));
+
 }
 // sortMaxMin([34, 2, 32, 45, 690, 6, 32, 7, 19, 47]);
 
 function sortingByCriteria(values) {
+    // Alphabetically sorting the array and then sorting it ascending
     values.sort().sort((a, b) => a.length - b.length);
     console.log(values.join('\n'));
 }
 // sortingByCriteria(['test', 'Deny', 'omen', 'Default']);
 
-// Task partially works 60/100
 function bombNumbers(numbers, specialArray) {
     // Fetch the values array
     let numbersArray = numbers;
@@ -151,27 +160,14 @@ function bombNumbers(numbers, specialArray) {
         }
     }
 
-    let sum = numbersArray.reduce((a,b) => a+b);
+    let sum = numbersArray.reduce((a, b) => a + b);
     console.log(sum);
 
 }
-bombNumbers(
-    [1, 4, 4, 2, 8, 9, 1],
-[9, 3]
-);
-
-
-
-
-
-
-
-
-
-
-
-
-
+// bombNumbers(
+//     [1, 4, 4, 2, 8, 9, 1],
+//     [9, 3]
+// );
 
 function searchNumber(arr1, arr2) {
     let elements = arr1;
