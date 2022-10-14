@@ -46,6 +46,32 @@ function equalNeighbors(matrix) {
 // ['4', '0', '5', '3', '4'],
 // ['2', '3', '5', '4', '2'],
 // ['9', '8', '7', '5', '4']]);
-equalNeighbors([['test', 'yo', 'yo', 'ho'],
-['well', 'done', 'no', '6'],
-['not', 'done', 'yet', '5']]);
+// equalNeighbors([['test', 'yo', 'yo', 'ho'],
+// ['well', 'done', 'no', '6'],
+// ['not', 'done', 'yet', '5']]);
+
+// More work required for the below
+function bunnyKill(entries) {
+    let bunnyMatrix = [];
+    let attackCoordinates = entries[entries.length - 1];
+
+    // Fetch the values of the bunny matrix
+    for (let index = 0; index < entries.length - 1; index++) {
+        bunnyMatrix.push([entries[index]]);
+    }
+
+    function bombExplosion(bunnyMatrix, coordinates) {
+        let coordinatesArray = coordinates.split(' ');
+    }
+    
+}
+bunnyKill([
+    '5 10 15 20',
+    '10 10 10 10',
+    '10 15 10 10',
+    '10 10 10 10',
+    '2,2 0,1'
+]);
+
+// Fetch the matrix and coordinates of the attacks: DONE
+// 
