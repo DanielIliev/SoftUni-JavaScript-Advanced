@@ -91,7 +91,7 @@ function muOnline(commands) {
                 if (currentHealth + healingValue < 100) {
                     heroStatus[0] += healingValue;
                 } else {
-                    healingValue = (currentHealth-100)*-1;
+                    healingValue = (currentHealth - 100) * -1;
                     heroStatus[0] += healingValue;
                 }
                 console.log(`You healed for ${healingValue} hp.\nCurrent health: ${heroStatus[0]} hp.`)
@@ -116,4 +116,90 @@ function muOnline(commands) {
 }
 
 // muOnline("rat 10|bat 20|potion 10|rat 10|chest 100|boss 70|chest 1000");
-muOnline("cat 10|potion 30|orc 10|chest 10|snake 25|chest 110");
+// muOnline("cat 10|potion 30|orc 10|chest 10|snake 25|chest 110");
+
+function inventory(commands) {
+
+    // Fetch the initial storage and remove it from the commands array
+    let items = commands[0].split(', ');
+    commands.shift();
+
+    // Process the received commands until a command Craft! is received
+    for (let index = 0; index < commands.length; index++) {
+
+        let currentCommand = commands[index].split(' - ');
+        if (commands[index] == 'Craft!') {
+            break;
+        }
+
+        items = processCommand(currentCommand, items);
+    }
+
+    // Print out the items in the inventory
+    console.log(items.join(', '));
+
+    function processCommand(currentCommandArray, itemsArray) {
+        let commandType = currentCommandArray[0];
+        let commandValue = currentCommandArray[1];
+
+        switch (commandType) {
+            case 'Collect':
+                if (checkIfItemExists(itemsArray, commandValue)) {
+                    console.log('Item already exists');
+                } else {
+                    itemsArray.push(commandValue);
+                }
+                break;
+            case 'Drop':
+                if (checkIfItemExists(itemsArray, commandValue)) {
+                    itemsArray.splice(itemsArray.indexOf(commandValue), 1);
+                }
+                break;
+            case 'Combine Items':
+                let oldItem = commandValue.split(':')[0];
+                let newItem = commandValue.split(':')[1];
+                if (checkIfItemExists(itemsArray, oldItem)) {
+                    let oldItemPosition = itemsArray.indexOf(oldItem);
+                    itemsArray.splice(oldItemPosition + 1, 0, newItem);
+                }
+                break;
+            case 'Renew':
+                if (checkIfItemExists(itemsArray, commandValue)) {
+                    let itemPosition = itemsArray.indexOf(commandValue);
+                    itemsArray.splice(itemPosition, 1);
+                    itemsArray.push(commandValue);
+                }
+                break;
+            default:
+                break;
+        }
+
+        return itemsArray;
+    }
+
+    function checkIfItemExists(itemsArray, item) {
+        let exists = false;
+
+        for (let index = 0; index < itemsArray.length; index++) {
+            if (itemsArray[index] == item) {
+                exists = true;
+                break;
+            }
+        }
+
+        return exists;
+    }
+}
+// inventory([
+//     'Iron, Wood, Sword',
+//     'Collect - Gold',
+//     'Drop - Wood',
+//     'Craft!'
+// ]);
+inventory([
+    'Iron, Sword',
+    'Drop - Bronze',
+    'Combine Items - Sword:Bow',
+    'Renew - Iron',
+    'Craft!'
+]);
