@@ -255,55 +255,128 @@ function inventory(heroesEntries) {
 // ]);
 
 function dictionary(entries) {
-    const wordTemplate = {
-        name: '',
-        description: ''
+
+    let words = {};
+
+    for (const iterator of entries) {
+        let word = JSON.parse(iterator);
+        words = Object.assign(words, word);
     }
 
-    // let test = entries.map(JSON.parse);
-    // let test2 = Object.entries(test);
-    
-    let words = [];
-
-    for (let index = 0; index < entries.length; index++) {
-        
-    }
-
-    
-    // for (let index = 0; index < entries.length; index++) {
-    //     if (checkIfWordExists != -1) {
-    //         // addWordToDictionary(entries[index]);
-    //         console.log(entries[index]);
-    //     } else {
-    //         console.log('Add the new description');
-    //     }
-    // }
+    let sortedWordKeys = Object.keys(words);
+    sortedWordKeys.sort((a, b) => a.localeCompare(b));
 
     // Print the dictionary sorted alphabetically
-
-    function checkIfWordExists(wordsArray, word) {
-        let wordId = -1;
-        for (let index = 0; index < wordsArray.length; index++) {
-            if (wordsArray[index].name == word) {
-                wordId = index;
-            }
-        }
-
-        return wordId;
-    }
-
-    function addWordToDictionary(wordString) {
-        
-    }
-
-    function sortAlphabetically(wordsArray) {
-
+    for (const term of sortedWordKeys) {
+        let definition = words[term];
+        console.log(`Term: ${term} => Definition: ${definition}`);
     }
 }
-dictionary([
-    '{"Coffee":"A hot drink made from the roasted and ground seeds (coffee beans) of a tropical shrub."}',
-    '{"Bus":"A large motor vehicle carrying passengers by road, typically one serving the public on a fixed route and for a fare."}',
-    '{"Boiler":"A fuel-burning apparatus or container for heating water."}',
-    '{"Tape":"A narrow strip of material, typically used to hold or fasten something."}',
-    '{"Microphone":"An instrument for converting sound waves into electrical energy variations which may then be amplified, transmitted, or recorded."}'
+// dictionary([
+//     '{"Coffee":"A hot drink made from the roasted and ground seeds (coffee beans) of a tropical shrub."}',
+//     '{"Bus":"A large motor vehicle carrying passengers by road, typically one serving the public on a fixed route and for a fare."}',
+//     '{"Boiler":"A fuel-burning apparatus or container for heating water."}',
+//     '{"Tape":"A narrow strip of material, typically used to hold or fasten something."}',
+//     '{"Microphone":"An instrument for converting sound waves into electrical energy variations which may then be amplified, transmitted, or recorded."}'
+// ]);
+
+function classVehicle() {
+    class Vehicle {
+        // Declaring class properties
+        type = '';
+        model = '';
+        parts = {
+            engine: 0,
+            power: 0,
+        };
+        power = 0;
+        fuel = 0;
+
+        // Calculate drive expendature
+        drive(fuel) {
+            this.fuel -= fuel;
+        }
+
+        constructor(type, model, parts, fuel) {
+            this.type = type;
+            this.model = model;
+            this.parts = parts;
+            this.parts.quality = parts.engine * parts.power;
+            this.fuel = fuel;
+        }
+    }
+}
+// classVehicle();
+
+function classStorage() {
+    class Storage {
+        capacity = 0;
+        storage = [];
+        totalCost = 0;
+
+        addProduct(productObject) {
+            this.storage.push(productObject);
+            this.capacity -= productObject.quantity;
+            this.totalCost += productObject.price * productObject.quantity;
+        }
+
+        getProducts() {
+            let output = [];
+            this.storage.forEach(product => {
+                output.push(JSON.stringify(product));
+            });
+            return output.join('\n');
+        }
+
+        constructor(capacity) {
+            this.capacity = capacity;
+        }
+    }
+
+    let productOne = { name: 'Cucamber', price: 1.50, quantity: 15 };
+    let productTwo = { name: 'Tomato', price: 0.90, quantity: 25 };
+    let productThree = { name: 'Bread', price: 1.10, quantity: 8 };
+    let storage = new Storage(50);
+    storage.addProduct(productOne);
+    storage.addProduct(productTwo);
+    storage.addProduct(productThree);
+    console.log(storage.getProducts());
+    console.log(storage.capacity);
+    console.log(storage.totalCost);
+}
+// classStorage();
+
+function catalogue(entries) {
+    let catalogueArray = entries.sort();
+    let catalogueWithLetters = [];
+
+    for (let index = 0; index < catalogueArray.length; index++) {
+        let currentWord = catalogueArray[index].split(' : ');
+        catalogueWithLetters.push(catalogueArray[index][0]);
+        catalogueWithLetters.push(currentWord[0] + ': ' + currentWord[1]);
+    }
+
+    catalogueWithLetters = Array.from(new Set(catalogueWithLetters));
+    for (let index = 0; index < catalogueWithLetters.length; index++) {
+        if (catalogueWithLetters[index].length == 1) {
+            console.log(catalogueWithLetters[index]);
+        } else {
+            console.log(`  ${catalogueWithLetters[index]}`);
+        }
+    }
+}
+// catalogue([
+//     'Appricot : 20.4',
+//     'Fridge : 1500',
+//     'TV : 1499',
+//     'Deodorant : 10',
+//     'Boiler : 300',
+//     'Apple : 1.25',
+//     'Anti-Bug Spray : 15',
+//     'T-Shirt : 10'
+// ]);
+catalogue([
+    'Omlet : 5.4',
+    'Shirt : 15',
+    'Cake : 59'
 ]);
