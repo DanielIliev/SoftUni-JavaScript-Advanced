@@ -65,13 +65,17 @@ function bunnyKill(entries) {
     }
     
 }
-bunnyKill([
-    '5 10 15 20',
-    '10 10 10 10',
-    '10 15 10 10',
-    '10 10 10 10',
-    '2,2 0,1'
-]);
+// bunnyKill([
+//     '5 10 15 20',
+//     '10 10 10 10',
+//     '10 15 10 10',
+//     '10 10 10 10',
+//     '2,2 0,1'
+// ]);
 
 // Fetch the matrix and coordinates of the attacks: DONE
-// 
+
+function airPollution() {
+
+}
+airPollution();
