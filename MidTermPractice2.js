@@ -116,69 +116,70 @@ function mindGame(entries) {
     // Fetch the sequences of matching pairs and remove them from the main array
     let sequences = entries[0].split(' ');
     entries.shift();
-
-    let numberOfMoves = 0;
+    let moves = 0;
 
     for (let index = 0; index < entries.length; index++) {
         if (entries[index] == 'end') {
             break;
-        } else {
-            numberOfMoves = index;
         }
-        let guessCommand = entries[index].split(' ');
-        sequences = processUserGuess(guessCommand, sequences, numberOfMoves);
-    }
 
-    if (sequences.length == 0) {
-        console.log(`You have won in ${numberOfMoves} turns!`);
-    } else {
-        console.log(`Sorry you lose :(\n${sequences.join(' ')}`);
-    }
+        moves++;
 
-    function processUserGuess(guessArray, sequencesArray, movesCount) {
-        let guessId1 = guessArray[0];
-        let guessId2 = guessArray[1];
+        let currentCommand = entries[index].split(' ');
+        let firstIndex = currentCommand[0];
+        let secondIndex = currentCommand[1];
 
-        if (sequencesArray.length != 0) {
-            if (sequencesArray[guessId1] !== undefined && sequencesArray[guessId2] !== undefined) {
-                if (guessId1 == guessId2) {
-                    console.log('Invalid input! Adding additional elements to the board');
-                    sequencesArray = addElementsToMiddle(sequencesArray, movesCount);
-                } else if (sequencesArray[guessId1] == sequencesArray[guessId2]) {
-                    console.log(`Congrats! You have found matching elements - ${sequencesArray[guessId1]}!`);
-                    sequencesArray = removeFoundElement(sequencesArray, sequencesArray[guessId1]);
-                } else {
-                    console.log('Try again!');
+        if (sequences[firstIndex] && sequences[secondIndex] && firstIndex != secondIndex) {
+            if (sequences[firstIndex] == sequences[secondIndex]) {
+                console.log(`Congrats! You have found matching elements - ${sequences[firstIndex]}!`);
+                sequences = removeMatchingElements(sequences, currentCommand);
+
+                if (sequences.length == 0) {
+                    console.log(`You have won in ${moves} turns!`);
+                    return;
                 }
-            } else {
-                console.log('Invalid input! Adding additional elements to the board');
-                sequencesArray = addElementsToMiddle(sequencesArray, movesCount);
+            }
+            else if (sequences[firstIndex] != sequences[secondIndex]) {
+                console.log("Try again!");
             }
         }
+        else {
+            sequences = addElementsToMiddle(sequences, moves);
+            console.log("Invalid input! Adding additional elements to the board");
+        }
 
-        return sequencesArray;
     }
 
-    function removeFoundElement(sequencesArray, element) {
+    if (sequences.length > 0) {
+        console.log('Sorry you lose :(');
+        console.log(sequences.join(' '));
+    }
 
-        for (let index = 0; index < sequencesArray.length; index++) {
-            if (sequencesArray[index] == element) {
-                sequencesArray.splice(sequencesArray.indexOf(element), 1);
-                index--;
-            }
+    function removeMatchingElements(sequencesArray, currentCommand) {
+        const firstIndex = currentCommand[0];
+        const secondIndex = currentCommand[1];
+
+        if (firstIndex > secondIndex) {
+            sequencesArray.splice(firstIndex, 1);
+            sequencesArray.splice(secondIndex, 1);
+        }
+        else {
+            sequencesArray.splice(secondIndex, 1);
+            sequencesArray.splice(firstIndex, 1);
         }
 
         return sequencesArray;
     }
 
     function addElementsToMiddle(sequencesArray, movesCount) {
-        let middle = sequencesArray.length / 2;
-        let moves = movesCount + 1;
-        let elementToBeAdded = '-' + String(moves) + 'a';
-        sequencesArray.splice(middle, 0, elementToBeAdded);
-        sequencesArray.splice(middle, 0, elementToBeAdded);
+        const addNumber = (-1) * movesCount + 'a';
+
+        sequencesArray.splice(sequencesArray.length / 2, 0, addNumber);
+        sequencesArray.splice(sequencesArray.length / 2, 0, addNumber);
+
         return sequencesArray;
     }
+
 }
 // mindGame(['a 2 4 a 2 4',
 //     '0 3',
@@ -187,10 +188,12 @@ function mindGame(entries) {
 //     '0 1',
 //     'end']);
 
-mindGame(['1 1 2 2 3 3 4 4 5 5',
-    '1 0',
-    '-1 0',
-    '1 0',
-    '1 0',
-    '1 0',
-    'end'])
+// mindGame([
+//     '1 1 2 2 3 3 4 4 5 5',
+//     '1 0',
+//     '-1 0',
+//     '1 0',
+//     '1 0',
+//     '1 0',
+//     'end'
+// ]);
