@@ -127,102 +127,89 @@ function shootToWin(commands) {
 // "End"]));
 
 function movingTarget(commands) {
-    // Taking the targets from the main array and removing it them from it
+    // Parsing the initial targets to numbers for correct calculations
     let targets = commands[0].split(' ');
+    targets = targets.map((a) => Number(a));
+
+    // Removing the initial targets from the commands array
     commands.shift();
 
-    // Parsing the targets as integers for correct calculations
-    targets = targets.map((a) => parseInt(a));
-
-    // Iterating through the main array to validate if a shot is taken or a target is added / removed
     for (let index = 0; index < commands.length; index++) {
-        let currentCommand = commands[index];
-
-        if (currentCommand == 'End') {
+        if (commands[index] == 'End') {
             break;
         }
-        if (currentCommand.includes('Shoot')) {
-            targets = shootATarget(targets, currentCommand);
-        } else if (currentCommand.includes('Add')) {
-            targets = addTarget(targets, currentCommand);
-        } else if (currentCommand.includes('Strike')) {
-            targets = strikeTarget(targets, currentCommand);
+        let currentCommand = commands[index].split(' ');
+        switch (currentCommand[0]) {
+            case 'Shoot':
+                targets = shootTarget(targets, currentCommand);
+                break;
+            case 'Add':
+                targets = addTarget(targets, currentCommand);
+                break;
+            case 'Strike':
+                targets = strikeTarget(targets, currentCommand);
+                break;
         }
     }
 
-    // Print targets
+    // Process the targets array to remove any striken values
     console.log(targets.join('|'));
 
-    // Process the shot taken
-    function shootATarget(targetsArray, shotTaken) {
-        let shotArray = shotTaken.split(' ');
-        let shotId = shotArray[1];
-        let shotPower = Number(shotArray[2]);
+    // Process the shoot target command
+    function shootTarget(targetsArray, commandArray) {
+        let targetId = commandArray[1];
+        let targetPower = Number(commandArray[2]);
 
-        for (let index = 0; index < targetsArray.length; index++) {
-            if (index == shotId) {
-                targetsArray[index] -= shotPower;
-                if (targetsArray[index] <= 0) {
-                    targetsArray.splice(index, 1);
-                }
+        if (targetsArray[targetId]) {
+            if (targetPower > 0) {
+                targetsArray[targetId] -= targetPower;
+            }
+            if (targetsArray[targetId] <= 0) {
+                targetsArray.splice(targetId, 1);
             }
         }
+
         return targetsArray;
     }
 
-    // Add target
-    function addTarget(targetsArray, targetInfo) {
-        let isValidTarget = false;
-        let targetData = targetInfo.split(' ');
-        let targetValue = Number(targetData[1]);
-        let targetId = targetData[2];
+    // Process the add target command
+    function addTarget(targetsArray, commandArray) {
+        let targetId = commandArray[1];
+        let targetValue = Number(commandArray[2]);
 
-        for (let index = 0; index < targetsArray.length; index++) {
-            if (index == targetId) {
-                targetsArray[index] = targetValue;
-                isValidTarget = true;
-            }
-        }
-
-        if (isValidTarget === false) {
+        if (targetsArray[targetId]) {
+            targetsArray.splice(targetId, 0, targetValue);
+        } else {
             console.log('Invalid placement!');
         }
 
         return targetsArray;
     }
 
-    // Strike target
-    function strikeTarget(targetsArray, strikeInfo) {
-        let strikeData = strikeInfo.split(' ');
-        let strikeId = strikeData[1];
-        let strikeRadius = Number(strikeData[2]);
-        let isValidStrike = false;
+    // Process the strike target command
+    function strikeTarget(targetsArray, commandArray) {
+        let targetId = Number(commandArray[1]);
+        const radius = Number(commandArray[2]);
+        const left = targetId - radius;
+        const right = targetId + radius;
 
-        for (let index = 0; index < targetsArray.length; index++) {
-            if (strikeId == index) {
-                let leftLimit = index - strikeRadius;
-                let rightLimit = index + strikeRadius;
-                if (leftLimit > 0 && rightLimit < targetsArray.length) {
-                    targetsArray.splice(leftLimit, rightLimit-leftLimit+1);
-                    isValidStrike = true;
-                }
-                break;
-            }
-        }
-
-        if (isValidStrike === false) {
+        if (targetsArray[left] && targetsArray[right]) {
+            targetsArray.splice(left, radius * 2 + 1);
+        } else {
             console.log('Strike missed!');
         }
 
         return targetsArray;
     }
-
 }
-movingTarget(([
-    "52 74 23 44 96 110",
-    "Shoot 5 10",
-    "Shoot 1 80",
-    "Strike 2 1",
-    "Add 22 3",
-    "End"
-]));
+// movingTarget(([
+//     "52 74 23 44 96 110",
+//     "Shoot 5 10",
+//     "Shoot 1 80",
+//     "Strike 2 1",
+//     "Add 22 3",
+//     "End"
+// ]));
+// movingTarget(["1 2 3 4 5",
+// "Strike 0 1",
+// "End"]);
