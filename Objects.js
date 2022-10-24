@@ -362,13 +362,16 @@ function catalogue(entries) {
     products.sort(sortProducts);
     let catalogue = [];
 
+    // Pushing the product with their first letters into the catalogue
     for (let index = 0; index < products.length; index++) {
         catalogue.push(products[index].name[0]);
         catalogue.push(products[index]);
     }
 
+    // Removing duplicate first letters in the catalogue
     let catalogueWithLetters = Array.from(new Set(catalogue));
     
+    // Printing out the catalogue in the required format
     for (let index = 0; index < catalogueWithLetters.length; index++) {
         if (catalogueWithLetters[index].length == 1) {
             console.log(catalogueWithLetters[index]);
@@ -377,6 +380,7 @@ function catalogue(entries) {
         }
     }
 
+    // Factory function to generate the product object
     function generateProduct(productName, productPrice) {
         return {
             name: productName,
