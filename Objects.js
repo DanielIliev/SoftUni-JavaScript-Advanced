@@ -359,7 +359,7 @@ function catalogue(entries) {
     }
 
     // Sort alphabetically
-    products.sort(sortProducts);
+    products.sort((a, b) => a.name.localeCompare(b.name));
     let catalogue = [];
 
     // Pushing the product with their first letters into the catalogue
@@ -388,9 +388,6 @@ function catalogue(entries) {
         }
     }
 
-    function sortProducts(firstProduct, secondProduct) {
-        return firstProduct.name.localeCompare(secondProduct.name);
-    }
 }
 // catalogue([
 //     'Appricot : 20.4',
