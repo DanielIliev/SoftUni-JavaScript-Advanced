@@ -128,13 +128,25 @@ function studentsGrades(entries) {
             let [key, value] = currentStudentInfo[index1].split(': ');
             currentStudent.push(value);
         }
-        students.push(generateStudentObject(currentStudent[0], Number(currentStudent[1]), Number(currentStudent[2])));
+        students.push(generateStudentObject(currentStudent[0], Number(currentStudent[1]) + 1, Number(currentStudent[2])));
         currentStudent = [];
     }
 
-    students.sort((a, b) => { return b.grade - a.grade });
-    console.log(students);
+    students.sort((a, b) => { return a.grade - b.grade });
 
+    let currentGrade = 8;
+
+    for (let index = 0; index < students.length; index++) {
+        let gradeAverage = 0;
+        if (students[index].grade == currentGrade) {
+            console.log(`Student: ${students[index].name} is in ${currentGrade}`);
+        } else {
+            currentGrade++;
+        }
+        console.log(currentGrade);
+    }
+
+    // Factory for the student object
     function generateStudentObject(studentName, studentGrade, studentAverage) {
         return {
             name: studentName,
