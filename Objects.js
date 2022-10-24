@@ -346,23 +346,46 @@ function classStorage() {
 }
 // classStorage();
 
+// 'Hacky' solution used for the catalogue
 function catalogue(entries) {
-    let catalogueArray = entries.sort();
-    let catalogueWithLetters = [];
+    let products = [];
 
-    for (let index = 0; index < catalogueArray.length; index++) {
-        let currentWord = catalogueArray[index].split(' : ');
-        catalogueWithLetters.push(catalogueArray[index][0]);
-        catalogueWithLetters.push(currentWord[0] + ': ' + currentWord[1]);
+    // Generate the product objects and push them into the array
+    for (let index = 0; index < entries.length; index++) {
+        let currentProduct = entries[index].split(' : ');
+        let productName = currentProduct[0];
+        let productPrice = Number(currentProduct[1]);
+        products.push(generateProduct(productName, productPrice));
     }
 
-    catalogueWithLetters = Array.from(new Set(catalogueWithLetters));
+    // Sort alphabetically
+    products.sort(sortProducts);
+    let catalogue = [];
+
+    for (let index = 0; index < products.length; index++) {
+        catalogue.push(products[index].name[0]);
+        catalogue.push(products[index]);
+    }
+
+    let catalogueWithLetters = Array.from(new Set(catalogue));
+    
     for (let index = 0; index < catalogueWithLetters.length; index++) {
         if (catalogueWithLetters[index].length == 1) {
             console.log(catalogueWithLetters[index]);
         } else {
-            console.log(`  ${catalogueWithLetters[index]}`);
+            console.log(`  ${catalogueWithLetters[index].name}: ${catalogueWithLetters[index].price}`);
         }
+    }
+
+    function generateProduct(productName, productPrice) {
+        return {
+            name: productName,
+            price: productPrice
+        }
+    }
+
+    function sortProducts(firstProduct, secondProduct) {
+        return firstProduct.name.localeCompare(secondProduct.name);
     }
 }
 // catalogue([
@@ -375,8 +398,8 @@ function catalogue(entries) {
 //     'Anti-Bug Spray : 15',
 //     'T-Shirt : 10'
 // ]);
-catalogue([
-    'Omlet : 5.4',
-    'Shirt : 15',
-    'Cake : 59'
-]);
+// catalogue([
+//     'Omlet : 5.4',
+//     'Shirt : 15',
+//     'Cake : 59'
+// ]);
