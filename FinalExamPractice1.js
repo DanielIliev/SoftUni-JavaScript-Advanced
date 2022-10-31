@@ -1,68 +1,37 @@
+// Work in progress
 function decryptor(entries) {
-    class Enigma {
-        message = [];
-
-        moveLetters = function (movesCount) {
-            for (let index = 0; index < movesCount; index++) {
-                let currentLetter = this.message.shift();
-                this.message.push(currentLetter);
-            }
-        }
-
-        insertLetter = function (index, value) {
-            this.message.splice(index, 0, value);
-        }
-
-        changeAll = function (substring, replacement) {
-            for (let index = 0; index < this.message.length; index++) {
-                if (this.message[index] == substring) {
-                    this.message[index] = replacement;
-                }
-            }
-        }
-
-        getMessage() {
-            return this.message;
-        }
-
-        constructor(message) {
-            this.message = message;
-        }
-    }
-
-    let initialMessage = entries[0].split('');
-    entries.shift();
-
-    let decrypt = new Enigma(initialMessage);
+    let message = entries.shift();
 
     let commands = entries;
-    let commandsLength = commands.length;
 
-    for (let index = 0; index < commandsLength; index++) {
-        if (commands[index] == 'Decode') {
+    for (const command of commands) {
+        if (command === 'Decode') {
             break;
         }
+        
+        let currentCommand = command;
+        let [commandType, ...commandValues] = currentCommand.split('|');
+        let messageArray = [];
 
-        let currentCommand = commands[index].split('|');
-
-        switch (currentCommand[0]) {
-            case 'Move':
-                decrypt.moveLetters(currentCommand[1]);
-                break;
-            case 'Insert':
-                decrypt.insertLetter(currentCommand[1], currentCommand[2]);
-                break;
-            case 'ChangeAll':
-                decrypt.changeAll(currentCommand[1], currentCommand[2]);
-                break;
-            default:
-                break;
+        if (commandType === 'Move') {
+            messageArray = message.split('');
+            for (let index = 0; index < commandValues[0]; index++) {
+                let letter = messageArray.shift();
+                messageArray.push(letter);
+            }
+            message = messageArray.join('');
+        } else if (commandType === 'Insert') {
+            messageArray = message.split('');
+            messageArray.splice(messageArray.indexOf(commandValues[0]), 0, commandValues[1]);
+            message = messageArray.join('');
+        } else if (commandType === 'ChangeAll') {
+            message = message.replace(new RegExp(commandValues[0], 'g'), commandValues[1]);
         }
     }
 
-    console.log(`The decrypted message is: ${decrypt.getMessage().join('')}`);
-
+    console.log(message);
 }
+
 decryptor([
     'zzHe',
     'ChangeAll|z|l',
@@ -77,14 +46,4 @@ decryptor([
 //     'Insert|3|are',
 //     'Insert|9|?',
 //     'Decode',
-//   ])
-
-
-// Move {number of letters}":
-// Moves the first n letters to the back of the string
-
-// "Insert {index} {value}":
-// Inserts the given value before the given index in the string
-
-// "ChangeAll {substring} {replacement}":
-// Changes all occurrences of the given substring with the replacement text
+// ]);
