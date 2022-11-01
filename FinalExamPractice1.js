@@ -1,35 +1,72 @@
 // Work in progress
 function decryptor(entries) {
-    let message = entries.shift();
+    class Enigma {
+        message = [];
 
-    let commands = entries;
-
-    for (const command of commands) {
-        if (command === 'Decode') {
-            break;
-        }
-        
-        let currentCommand = command;
-        let [commandType, ...commandValues] = currentCommand.split('|');
-        let messageArray = [];
-
-        if (commandType === 'Move') {
-            messageArray = message.split('');
-            for (let index = 0; index < commandValues[0]; index++) {
-                let letter = messageArray.shift();
-                messageArray.push(letter);
+        moveLetters = function (movesCount) {
+            for (let index = 0; index < movesCount; index++) {
+                let currentLetter = this.message.shift();
+                this.message.push(currentLetter);
             }
-            message = messageArray.join('');
-        } else if (commandType === 'Insert') {
-            messageArray = message.split('');
-            messageArray.splice(messageArray.indexOf(commandValues[0]), 0, commandValues[1]);
-            message = messageArray.join('');
-        } else if (commandType === 'ChangeAll') {
-            message = message.replace(new RegExp(commandValues[0], 'g'), commandValues[1]);
+        }
+
+        insertLetter = function (index, value) {
+            this.message.splice(index, 0, value);
+        }
+
+        changeAll = function (substring, replacement) {
+            for (let index = 0; index < this.message.length; index++) {
+                if (this.message[index] == substring) {
+                    this.message[index] = replacement;
+                }
+            }
+        }
+
+        getMessage() {
+            return this.message;
+        }
+
+        constructor(message) {
+            this.message = message;
         }
     }
 
-    console.log(message);
+    let initialMessage = entries[0].split('');
+    entries.shift();
+
+    if (initialMessage.length != 0) {
+        let decrypt = new Enigma(initialMessage);
+
+        let commands = entries;
+        let commandsLength = commands.length;
+    
+        for (let index = 0; index < commandsLength; index++) {
+            if (commands[index] == 'Decode') {
+                break;
+            }
+    
+            let currentCommand = commands[index].split('|');
+    
+            switch (currentCommand[0]) {
+                case 'Move':
+                    decrypt.moveLetters(currentCommand[1]);
+                    break;
+                case 'Insert':
+                    decrypt.insertLetter(currentCommand[1], currentCommand[2]);
+                    break;
+                case 'ChangeAll':
+                    decrypt.changeAll(currentCommand[1], currentCommand[2]);
+                    break;
+                default:
+                    break;
+            }
+        }
+    
+        console.log(`The decrypted message is: ${decrypt.getMessage().join('')}`);
+    } else {
+        console.log(`The decrypted message is: `);
+    }
+
 }
 
 decryptor([
@@ -39,11 +76,14 @@ decryptor([
     'Move|3',
     'Decode',
 ]);
-// decryptor([
-//     'owyouh',
-//     'Move|2',
-//     'Move|3',
-//     'Insert|3|are',
-//     'Insert|9|?',
-//     'Decode',
-// ]);
+
+console.log('Second entry');
+
+decryptor([
+    'owyouh',
+    'Move|2',
+    'Move|3',
+    'Insert|3|are',
+    'Insert|9|?',
+    'Decode',
+]);
