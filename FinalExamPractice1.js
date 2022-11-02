@@ -97,16 +97,16 @@ function decryptor(entries) {
 
 function adAstra(productsString) {
     // Creating the string patterns and extracting the product values
-    let dashPattern = new RegExp(/[a-zA-Z ]*#\d{2}\/\d{2}\/\d{2}#[0-9]*/, 'g');
-    let pipePattern = new RegExp(/[a-zA-Z ]*\|\d{2}\/\d{2}\/\d{2}\|[0-9]*/, 'g');
-    let [...dashProducts] = productsString.match(dashPattern);
-    let [...pipeProducts] = productsString.match(pipePattern);
-
-    // Concatinating all the data received
-    let products = dashProducts.concat(pipeProducts);
+    let pattern = new RegExp(/#[a-zA-Z ]*#\d{2}\/\d{2}\/\d{2}#[0-9]*#|\|[a-zA-Z ]*\|\d{2}\/\d{2}\/\d{2}\|[0-9]*\|/);
+    let products = [];
     let productsObjects = [];
 
-    // Generating object for each product
+    while (productsString.toString().match(pattern) != null) {
+        [...temp] = productsString.toString().match(pattern);
+        products.push(temp[0]);
+        productsString = productsString.toString().replace(pattern, '');
+    }
+    
     for (const product of products) {
         let productArray = [];
         if (product.includes('|')) {
@@ -114,7 +114,7 @@ function adAstra(productsString) {
         } else if (product.includes('#')) {
             productArray = product.split('#');
         }
-        productsObjects.push(generateProductObject(productArray[0], productArray[1], productArray[2]));
+        productsObjects.push(generateProductObject(productArray[1], productArray[2], productArray[3]));
     }
 
     // Calculating the total calories
@@ -123,7 +123,7 @@ function adAstra(productsString) {
         totalCalories += Number(product.calories);
     }
     
-    // Print out the result in the expected format
+    // // Print out the result in the expected format
     let days = Math.floor(totalCalories / 2000);
     console.log(`You have food to last you for: ${days} days!`);
     if (productsObjects.length != 0) {
@@ -132,27 +132,22 @@ function adAstra(productsString) {
         }
     }
 
-    // Generate product object
+    // // Generate product object
     function generateProductObject(productName, productQuantity, productCalories) {
         return {
             name: productName,
             bestByDate: productQuantity,
-            calories: productCalories
+            calories: productCalories,
         }
     }
 }
-adAstra('#Bread#19/03/21#4000#|Invalid|03/03.20||Apples|08/10/20|200||Carrots|06/08/20|500||Not right|6.8.20|5|');
 
-console.log('\nsecond entry\n');
+// adAstra('#Bread#19/03/21#4000#|Invalid|03/03.20||Apples|08/10/20|200||Carrots|06/08/20|500||Not right|6.8.20|5|');
 
-adAstra('$$#@@%^&#Fish#24/12/20#8500#|#Incorrect#19.03.20#450|$5*(@!#Ice Cream#03/10/21#9000#^#@aswe|Milk|05/09/20|2000|');
+// console.log('\nsecond entry\n');
 
-console.log('\nthird entry\n');
+// adAstra('$$#@@%^&#Fish#24/12/20#8500#|#Incorrect#19.03.20#450|$5*(@!#Ice Cream#03/10/21#9000#^#@aswe|Milk|05/09/20|2000|');
 
-adAstra('Hello|#Invalid food#19/03/20#450|$5*(@');
+// console.log('\nthird entry\n');
 
-// #{item name}#{expiration date}#{calories}#
-// or
-// |{item name}|{expiration date}|{calories}|
-
-// /#[a-zA-Z]+#\d{4}\/\d{2}\/\d{2}#[0-9]+#/
+// adAstra('Hello|#Invalid food#19/03/20#450|$5*(@');
