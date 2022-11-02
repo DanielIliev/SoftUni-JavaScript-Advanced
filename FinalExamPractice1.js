@@ -41,14 +41,14 @@ function decryptor(entries) {
 
         let commands = entries;
         let commandsLength = commands.length;
-    
+
         for (let index = 0; index < commandsLength; index++) {
             if (commands[index] == 'Decode') {
                 break;
             }
-    
+
             let [commandType, ...commandValues] = commands[index].split('|');
-    
+
             switch (commandType) {
                 case 'Move':
                     if (commandValues[0]) {
@@ -76,21 +76,83 @@ function decryptor(entries) {
 
 }
 
-decryptor([
-    'zzHe',
-    'ChangeAll|z|l',
-    'Insert|2|o',
-    'Move|3',
-    'Decode',
-]);
+// decryptor([
+//     'zzHe',
+//     'ChangeAll|z|l',
+//     'Insert|2|o',
+//     'Move|3',
+//     'Decode',
+// ]);
 
-console.log('Second entry');
+// console.log('Second entry');
 
-decryptor([
-    'owyouh',
-    'Move|2',
-    'Move|3',
-    'Insert|3|are',
-    'Insert|9|?',
-    'Decode',
-]);
+// decryptor([
+//     'owyouh',
+//     'Move|2',
+//     'Move|3',
+//     'Insert|3|are',
+//     'Insert|9|?',
+//     'Decode',
+// ]);
+
+function adAstra(productsString) {
+    // Creating the string patterns and extracting the product values
+    let dashPattern = new RegExp(/[a-zA-Z ]*#\d{2}\/\d{2}\/\d{2}#[0-9]*/, 'g');
+    let pipePattern = new RegExp(/[a-zA-Z ]*\|\d{2}\/\d{2}\/\d{2}\|[0-9]*/, 'g');
+    let [...dashProducts] = productsString.match(dashPattern);
+    let [...pipeProducts] = productsString.match(pipePattern);
+
+    // Concatinating all the data received
+    let products = dashProducts.concat(pipeProducts);
+    let productsObjects = [];
+
+    // Generating object for each product
+    for (const product of products) {
+        let productArray = [];
+        if (product.includes('|')) {
+            productArray = product.split('|');
+        } else if (product.includes('#')) {
+            productArray = product.split('#');
+        }
+        productsObjects.push(generateProductObject(productArray[0], productArray[1], productArray[2]));
+    }
+
+    // Calculating the total calories
+    let totalCalories = 0;
+    for (const product of productsObjects) {
+        totalCalories += Number(product.calories);
+    }
+    
+    // Print out the result in the expected format
+    let days = Math.floor(totalCalories / 2000);
+    console.log(`You have food to last you for: ${days} days!`);
+    if (productsObjects.length != 0) {
+        for (const product of productsObjects) {
+            console.log(`Item: ${product.name}, Best before: ${product.bestByDate}, Nutrition: ${product.calories}`);
+        }
+    }
+
+    // Generate product object
+    function generateProductObject(productName, productQuantity, productCalories) {
+        return {
+            name: productName,
+            bestByDate: productQuantity,
+            calories: productCalories
+        }
+    }
+}
+adAstra('#Bread#19/03/21#4000#|Invalid|03/03.20||Apples|08/10/20|200||Carrots|06/08/20|500||Not right|6.8.20|5|');
+
+console.log('\nsecond entry\n');
+
+adAstra('$$#@@%^&#Fish#24/12/20#8500#|#Incorrect#19.03.20#450|$5*(@!#Ice Cream#03/10/21#9000#^#@aswe|Milk|05/09/20|2000|');
+
+console.log('\nthird entry\n');
+
+adAstra('Hello|#Invalid food#19/03/20#450|$5*(@');
+
+// #{item name}#{expiration date}#{calories}#
+// or
+// |{item name}|{expiration date}|{calories}|
+
+// /#[a-zA-Z]+#\d{4}\/\d{2}\/\d{2}#[0-9]+#/
