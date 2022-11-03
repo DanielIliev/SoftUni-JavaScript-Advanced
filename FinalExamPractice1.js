@@ -106,7 +106,7 @@ function adAstra(productsString) {
         products.push(temp[0]);
         productsString = productsString.toString().replace(pattern, '');
     }
-    
+
     for (const product of products) {
         let productArray = [];
         if (product.includes('|')) {
@@ -122,7 +122,7 @@ function adAstra(productsString) {
     for (const product of productsObjects) {
         totalCalories += Number(product.calories);
     }
-    
+
     // // Print out the result in the expected format
     let days = Math.floor(totalCalories / 2000);
     console.log(`You have food to last you for: ${days} days!`);
@@ -151,3 +151,98 @@ function adAstra(productsString) {
 // console.log('\nthird entry\n');
 
 // adAstra('Hello|#Invalid food#19/03/20#450|$5*(@');
+
+function pianist(entries) {
+    let initialCount = Number(entries.shift());
+    let initialSongs = entries.slice(0, initialCount);
+    let commands = entries.slice(initialCount, entries.indexOf('Stop'));
+    let songs = [];
+
+    // Generate the initial songs objects
+    for (const song of initialSongs) {
+        let [piece, composer, key] = song.split('|');
+        songs.push(generateSongObject(piece, composer, key));
+    }
+
+    for (const command of commands) {
+        let [commandType, ...commandValues] = command.split('|');
+
+        switch (commandType) {
+            case 'Add':
+
+                break;
+            case 'ChangeKey':
+                if (checkIfSongExists(songs, commandValues[0])) {
+                    songs = changeSong(songs, commandValues);
+                } else {
+                    console.log(`Invalid operation! ${commandValues[0]} does not exist in the collection.`);
+                }
+                break;
+            case 'Remove':
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    console.log(songs);
+
+    function checkIfSongExists(songs, songName) {
+        let exists = false;
+        for (const song of songs) {
+            if (song.name === songName) {
+                exists = true;
+                break;
+            }
+        }
+        return exists;
+    }
+
+    function changeSong(songs, newValues) {
+        let [songName, songKey] = newValues;
+        for (const song of songs) {
+            if (song.name === songName) {
+                song.key = songKey;
+                console.log(`Changed the key of ${songName} to ${songKey}!`);
+            }
+        }
+        return songs;
+    }
+
+    function generateSongObject(name, composer, key) {
+        return {
+            name,
+            composer,
+            key
+        }
+    }
+
+}
+pianist([
+    '3',
+    'Fur Elise|Beethoven|A Minor',
+    'Moonlight Sonata|Beethoven|C# Minor',
+    'Clair de Lune|Debussy|C# Minor',
+    'Add|Sonata No.2|Chopin|B Minor',
+    'Add|Hungarian Rhapsody No.2|Liszt|C# Minor',
+    'Add|Fur Elise|Beethoven|C# Minor',
+    'Remove|Clair de Lune',
+    'ChangeKey|Moonlight Sonata|C# Major',
+    'Stop'
+]);
+
+// pianist([
+//     '4',
+//     'Eine kleine Nachtmusik|Mozart|G Major',
+//     'La Campanella|Liszt|G# Minor',
+//     'The Marriage of Figaro|Mozart|G Major',
+//     'Hungarian Dance No.5|Brahms|G Minor',
+//     'Add|Spring|Vivaldi|E Major',
+//     'Remove|The Marriage of Figaro',
+//     'Remove|Turkish March',
+//     'ChangeKey|Spring|C Major',
+//     'Add|Nocturne|Chopin|C# Minor',
+//     'Stop'
+// ]);
