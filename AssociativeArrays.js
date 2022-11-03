@@ -205,66 +205,34 @@ function partyTime(guestsArray) {
 // ]);
 
 function cardGame(values) {
-    let players = [];
-    let scoreBoard = [];
+    let playersCards = {};
+    let scoreBoard = {};
 
-    for (const iterator of values) {
-        let [player, ...cards] = iterator.split(': ');
-
-        players.push(generatePlayerObject(player, cards));
-    }
-
-    players.sort((a, b) => a.playerName.localeCompare(b.playerName));
-
-    // Fetch players names
-    let playerNames = [];
-    for (const player of players) {
-        if (playerNames.includes(player.playerName) == false) {
-            playerNames.push(player.playerName);
+    // Exctract the players and their cards
+    for (const value of values) {
+        let [playerName, ...cards] = value.split(': ');
+        if (playersCards[playerName]) {
+            playersCards[playerName] += ', ' + cards;
+        } else {
+            playersCards[playerName] = cards;
         }
+        scoreBoard[playerName] = 0;
     }
 
-    // Generate the scoreboard
-    for (const name of playerNames) {
-        scoreBoard.push(generateScoreObject(name));
+    for (const player in playersCards) {
+        console.log(calculateScore(playersCards[player]));
     }
+    
 
-    // Fetch all player cards
-    for (let index = 0; index < players.length; index++) {
-        if (players[index + 1]) {
-            if (players[index].playerName == players[index + 1].playerName) {
-                players[index].playerCards += ', ' + players[index + 1].playerCards;
-                players.splice(index + 1, 1);
-                index--;
-            }
-        }
-    }
+    // Print the scores in the required format
+    // for (const score in scoreBoard) {
+    //     console.log(`${score}: ${scoreBoard[score]}`);
+    // }
 
-
-
-    // Calculate the scores
-    for (const player of players) {
-        console.log(`${player.playerName}: ${calculateScore(player.playerCards)}`);
-    }
-
-    function generatePlayerObject(name, cards) {
-        return {
-            playerName: name,
-            playerCards: cards
-        }
-    }
-
-    function generateScoreObject(playerName) {
-        return {
-            name: playerName,
-            score: 0
-        }
-    }
-
+    // Compilation error comes from this function
     function calculateScore(cards) {
         let score = 0;
-        let cardsString = cards.toString();
-        let cardsArray = cardsString.split(', ');
+        let cardsArray = cards.split(', ');
 
         for (let card of cardsArray) {
             if (card.length == 2) {
@@ -325,7 +293,17 @@ cardGame([
     'Andrea: QH, QC, JS, JD, JC',
     'Peter: JD, JD, JD, JD, JD, JD'
 ]);
-// cardGame([
-//     'Peter: 2C, 4H, 9H, AS, QS',
-//     'Tomas: 6H, 7S, KC, KD, 5S, 10C',
-// ]);
+
+console.log('second entry');
+
+cardGame([
+    'John: 2C, 4H, 9H, AS, QS',
+    'Slav: 3H, 10S, JC, KD, 5S, 10S',
+    'Alex: 6H, 7S, KC, KD, 5S, 10C',
+    'Thomas: QH, QC, JS, JD, JC',
+    'Slav: 6H, 7S, KC, KD, 5S, 10C',
+    'Thomas: QH, QC, JS, JD, JC',
+    'Alex: 6H, 7S, KC, KD, 5S, 10C',
+    'Thomas: QH, QC, JS, JD, JC',
+    'John: JD, JD, JD, JD'
+]);
