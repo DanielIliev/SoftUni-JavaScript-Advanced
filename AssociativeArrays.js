@@ -210,7 +210,7 @@ function cardGame(values) {
 
     // Exctract the players and their cards
     for (const value of values) {
-        let [playerName, ...cards] = value.split(': ');
+        let [playerName, cards] = value.split(': ');
         if (playersCards[playerName]) {
             playersCards[playerName] += ', ' + cards;
         } else {
@@ -219,24 +219,25 @@ function cardGame(values) {
         scoreBoard[playerName] = 0;
     }
 
-    for (const player in playersCards) {
-        console.log(calculateScore(playersCards[player]));
+    // Calculate the score for each player
+    for (const cards in playersCards) {
+        let cardsArray = playersCards[cards].split(', ');
+        let uniqueCards = [...new Set(cardsArray)];
+        scoreBoard[cards] = calculateScore(uniqueCards);
     }
     
 
     // Print the scores in the required format
-    // for (const score in scoreBoard) {
-    //     console.log(`${score}: ${scoreBoard[score]}`);
-    // }
+    for (const score in scoreBoard) {
+        console.log(`${score}: ${scoreBoard[score]}`);
+    }
 
-    // Compilation error comes from this function
     function calculateScore(cards) {
         let score = 0;
-        let cardsArray = cards.split(', ');
 
-        for (let card of cardsArray) {
-            if (card.length == 2) {
-                [cardPower, cardMultiplier] = card.split('');
+        for (let index = 0; index < cards.length; index++) {
+            if (cards[index].length == 2) {
+                [cardPower, cardMultiplier] = cards[index].split('');
                 switch (cardPower) {
                     case 'J':
                         score += 11 * fetchCardMultiplier(cardMultiplier);
@@ -255,7 +256,7 @@ function cardGame(values) {
                         break;
                 }
             } else {
-                let temp = card.split('');
+                let temp = cards[index].split('');
                 score += 10 * fetchCardMultiplier(temp[temp.length - 1]);
             }
         }
@@ -285,25 +286,25 @@ function cardGame(values) {
     }
 
 }
-cardGame([
-    'Peter: 2C, 4H, 9H, AS, QS',
-    'Tomas: 3H, 10S, JC, KD, 5S, 10S',
-    'Andrea: QH, QC, QS, QD',
-    'Tomas: 6H, 7S, KC, KD, 5S, 10C',
-    'Andrea: QH, QC, JS, JD, JC',
-    'Peter: JD, JD, JD, JD, JD, JD'
-]);
+// cardGame([
+//     'Peter: 2C, 4H, 9H, AS, QS',
+//     'Tomas: 3H, 10S, JC, KD, 5S, 10S',
+//     'Andrea: QH, QC, QS, QD',
+//     'Tomas: 6H, 7S, KC, KD, 5S, 10C',
+//     'Andrea: QH, QC, JS, JD, JC',
+//     'Peter: JD, JD, JD, JD, JD, JD'
+// ]);
 
-console.log('second entry');
+// console.log('second entry');
 
-cardGame([
-    'John: 2C, 4H, 9H, AS, QS',
-    'Slav: 3H, 10S, JC, KD, 5S, 10S',
-    'Alex: 6H, 7S, KC, KD, 5S, 10C',
-    'Thomas: QH, QC, JS, JD, JC',
-    'Slav: 6H, 7S, KC, KD, 5S, 10C',
-    'Thomas: QH, QC, JS, JD, JC',
-    'Alex: 6H, 7S, KC, KD, 5S, 10C',
-    'Thomas: QH, QC, JS, JD, JC',
-    'John: JD, JD, JD, JD'
-]);
+// cardGame([
+//     'John: 2C, 4H, 9H, AS, QS',
+//     'Slav: 3H, 10S, JC, KD, 5S, 10S',
+//     'Alex: 6H, 7S, KC, KD, 5S, 10C',
+//     'Thomas: QH, QC, JS, JD, JC',
+//     'Slav: 6H, 7S, KC, KD, 5S, 10C',
+//     'Thomas: QH, QC, JS, JD, JC',
+//     'Alex: 6H, 7S, KC, KD, 5S, 10C',
+//     'Thomas: QH, QC, JS, JD, JC',
+//     'John: JD, JD, JD, JD'
+// ]);
