@@ -139,7 +139,6 @@ function piccolo(entries) {
 // 'OUT, CA2844AA',
 // 'OUT, CA1234TA']);
 
-// More work needs to be done for this task
 function partyTime(guestsArray) {
     let guestsList = guestsArray.slice(0, guestsArray.indexOf('PARTY'));
     let guestsAtTheParty = guestsArray.slice(guestsArray.indexOf('PARTY') + 1);
@@ -149,11 +148,13 @@ function partyTime(guestsArray) {
             if (guestsList[index] == guestsAtTheParty[index1]) {
                 guestsList.splice(index, 1);
                 index--;
+                guestsAtTheParty.splice(index1, 1);
+                break;
             }
         }
     }
 
-    guestsList.sort();
+    guestsList.sort((a,b) => a - b);
 
     console.log(guestsList.length);
     console.log(guestsList.join('\n'));
@@ -361,7 +362,7 @@ function minerTask(resources) {
             stockpile[resource] = 0;
         }
     }
-    
+
     // Generate resource quantities
     for (let index = 0; index < resources.length; index++) {
         for (const resourceType in stockpile) {
@@ -380,22 +381,22 @@ function minerTask(resources) {
     }
 }
 
-minerTask([
-    'gold',
-    '155',
-    'silver',
-    '10',
-    'copper',
-    '17',
-    'gold',
-    '15'
-]);
+// minerTask([
+//     'gold',
+//     '155',
+//     'silver',
+//     '10',
+//     'copper',
+//     '17',
+//     'gold',
+//     '15'
+// ]);
 
-minerTask([
-    'Gold',
-    '155',
-    'Silver',
-    '10',
-    'Copper',
-    '17'
-    ])
+// minerTask([
+//     'Gold',
+//     '155',
+//     'Silver',
+//     '10',
+//     'Copper',
+//     '17'
+// ]);
