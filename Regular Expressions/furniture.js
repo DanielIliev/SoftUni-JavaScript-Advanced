@@ -1,34 +1,32 @@
 function furniture(productEntries) {
     let validProductPattern = new RegExp(/>>[A-Za-z]+<<[0-9]+.[0-9]+![0-9]+/, 'gi');
     let productNamePattern = new RegExp(/[A-Za-z]+/, 'gi');
-    let productPricePattern = new RegExp(/[0-9]+.[0-9]+!/, 'gi');
-    let productQuantityPattern = new RegExp(/[0-9]+$/, 'gi');
+    let productNumericalPattern = new RegExp(/[0-9]+.[0-9]+![0-9]+/, 'gi');
     let validProducts = [];
 
     for (const product of productEntries) {
         if (product.toString().match(validProductPattern)) {
             let productName = product.toString().match(productNamePattern)[0];
-            let productTempPrice = product.toString().match(productPricePattern);
-            let productQuantity = Number(product.toString().match(productQuantityPattern));
-            let productPrice = Number(productTempPrice[0].split('!')[0]);
-
-            validProducts.push(generateProductObject(productName, productPrice, productQuantity));
+            let numericalValues = product.toString().match(productNumericalPattern);
+            let [productPrice, productQuantity] = numericalValues.toString().split('!');
+            validProducts.push(generateProductObject(productName, Number(productPrice), Number(productQuantity)));
         }
     }
 
+    let price = quantity = 0;
+    
     if (validProducts.length != 0) {
         console.log('Bought furniture:');
         for (const product of validProducts) {
             console.log(product.name);
         }
-        let price = quantity = 0;
         validProducts.forEach((product) => {
             price += product.price * product.quantity;
         });
         console.log(`Total money spend: ${price.toFixed(2)}`);
     } else {
         console.log('Bought furniture:');
-        console.log(`Total money spend: 0.00`);
+        console.log(`Total money spend: ${price.toFixed(2)}`);
     }
 
     function generateProductObject(name, price, quantity) {
@@ -56,9 +54,9 @@ function furniture(productEntries) {
 // '>>Invalid<<!!5',
 // 'Purchase']);
 
-// furniture(['>Invalid<<!4',
-// '>Invalid<<!2',
-// '>Invalid<<!5',
-// 'Purchase']);
+furniture(['>Invalid<<!4',
+'>Invalid<<!2',
+'>Invalid<<!5',
+'Purchase']);
 
 // Entry format: ">>{furniture name}<<{price}!{quantity}"
