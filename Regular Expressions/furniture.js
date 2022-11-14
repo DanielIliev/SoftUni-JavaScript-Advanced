@@ -14,7 +14,7 @@ function furniture(productEntries) {
     }
 
     let price = quantity = 0;
-    
+
     if (validProducts.length != 0) {
         console.log('Bought furniture:');
         for (const product of validProducts) {
@@ -54,9 +54,42 @@ function furniture(productEntries) {
 // '>>Invalid<<!!5',
 // 'Purchase']);
 
-furniture(['>Invalid<<!4',
-'>Invalid<<!2',
-'>Invalid<<!5',
-'Purchase']);
+// furniture(['>Invalid<<!4',
+// '>Invalid<<!2',
+// '>Invalid<<!5',
+// 'Purchase']);
 
 // Entry format: ">>{furniture name}<<{price}!{quantity}"
+
+function test(entries) {
+    let pattern = new RegExp(/>>(?<furniture>\w+)<<(?<price>\d+[.]?\d+)!(?<quantity>\d+)$/);
+    let furniture = [];
+    let total = 0;
+
+    console.log('Bought furniture:');
+
+    for (const entry of entries) {
+        let currentMatch = entry.toString().match(pattern);
+        if (currentMatch) {
+            furniture.push(currentMatch.groups['furniture']);
+            let price = Number(currentMatch.groups['price']);
+            let quantity = Number(currentMatch.groups['quantity']);
+            total += price * quantity;
+        }
+    }
+
+    if (furniture.length > 0) {
+        console.log(furniture.join('\n'));
+    }
+
+    console.log(`Total money spend: ${total.toFixed(2)}`);
+}
+
+test(
+    ['>>Sofa<<312.23!3',
+'>>TV<<300!5',
+'>Invalid<<!5',
+'Purchase']
+
+
+);

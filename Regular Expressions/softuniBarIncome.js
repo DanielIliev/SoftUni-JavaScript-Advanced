@@ -1,4 +1,4 @@
-function test(input) {
+function softuniBarIncome(input) {
 
     let pattern = /%(?<customer>[A-Z][a-z]*)%[^|$%.]*?<(?<product>\w+)>[^|$%.]*?\|(?<count>\d+)\|[^|$%.]*?(?<price>[0-9]+(\.[0-9]+)?)\$/;
     let total = 0;
