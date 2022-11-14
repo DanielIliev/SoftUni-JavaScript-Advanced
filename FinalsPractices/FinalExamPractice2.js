@@ -57,8 +57,6 @@ function worldTour(commands) {
 // "Switch:Hawai:Bulgaria",
 // "Travel"]);
 
-
-
 // "Add Stop:{index}:{string}":
 // Insert the given string at that index only if the index is valid
 
@@ -94,5 +92,50 @@ function destinationMapper(entryString) {
     console.log(`Travel Points: ${destinationPoints}`);
 
 }
-destinationMapper('=Hawai=/Cyprus/=Invalid/invalid==i5valid=/I5valid/=i=');
-destinationMapper('ThisIs some InvalidInput');
+// destinationMapper('=Hawai=/Cyprus/=Invalid/invalid==i5valid=/I5valid/=i=');
+// destinationMapper('ThisIs some InvalidInput');
+
+function plantDiscovery(entries) {
+    // Variable declarations
+    let plants = {};
+    let plantsCount = Number(entries.shift());
+
+    for (const entry of entries) {
+        let [plant, rarity] = entry.split('<->');
+        plants[plant] = generatePlantStats(plant, Number(rarity));
+    }
+
+    for (const plant in plants) {
+        if (Object.hasOwnProperty.call(plants, plant)) {
+            const element = plants[plant];
+            console.log(element);
+        }
+    }
+
+    function generatePlantStats(plantName, plantRarity) {
+        return {
+            name: plantName,
+            rarity: plantRarity,
+            rating: 0
+        }
+    }
+}
+plantDiscovery([
+    "3",
+    "Arnoldii<->4",
+    "Woodii<->7",
+    "Welwitschia<->2",
+    "Rate: Woodii - 10",
+    "Rate: Welwitschia - 7",
+    "Rate: Arnoldii - 3",
+    "Rate: Woodii - 5",
+    "Update: Woodii - 5",
+    "Reset: Arnoldii",
+    "Exhibition",
+]);
+// plantDiscovery(["2",
+//     "Candelabra<->10",
+//     "Oahu<->10",
+//     "Rate: Oahu - 7",
+//     "Rate: Candelabra - 6",
+//     "Exhibition"]);
