@@ -70,10 +70,10 @@ function worldTour(commands) {
 
 // Hawai::RomeCyprys-Greece
 
-// 80/100
+// 100/100
 function destinationMapper(entryString) {
 
-    let pattern = new RegExp(/=[A-Z]{1}[A-Za-z]{2,}=|\/[A-Z]{1}[A-Za-z]{2,}\//, 'gi');
+    let pattern = new RegExp(/=[A-Z]{1}[A-Za-z]{2,}=|\/[A-Z]{1}[A-Za-z]{2,}\//, 'g');
     let destinationsInfo = entryString.toString().match(pattern);
     let destinationArray = [];
 
@@ -94,5 +94,5 @@ function destinationMapper(entryString) {
     console.log(`Travel Points: ${destinationPoints}`);
 
 }
-// destinationMapper('=Hawai=/Cyprus/=Invalid/invalid==i5valid=/I5valid/=i=');
-// destinationMapper('ThisIs some InvalidInput');
+destinationMapper('=Hawai=/Cyprus/=Invalid/invalid==i5valid=/I5valid/=i=');
+destinationMapper('ThisIs some InvalidInput');
