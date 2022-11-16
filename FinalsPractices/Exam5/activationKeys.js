@@ -1,3 +1,4 @@
+// 100/100
 function activationKeys(entries) {
     let activationKey = entries.shift();
 
