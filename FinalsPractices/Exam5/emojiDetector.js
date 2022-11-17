@@ -18,9 +18,11 @@ function emojiDetector(messageArray) {
     console.log(`Cool threshold: ${coolnessThreshold}`);
     console.log(`${emojis.length} emojis found in the text. The cool ones are:`);
 
-    for (const emoji of emojis) {
-        if (calculateEmojiCoolness(emoji) >= coolnessThreshold) {
-            console.log(emoji);
+    if (emojis.length > 0) {
+        for (const emoji of emojis) {
+            if (calculateEmojiCoolness(emoji) > coolnessThreshold) {
+                console.log(emoji);
+            }
         }
     }
 
