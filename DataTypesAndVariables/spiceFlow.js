@@ -1,15 +1,19 @@
-function spiceFlow(entry) {
-    let initialYield = Number(entry);
-    let total = 0;
+function spiceFlow(yield) {
+    let spiceAvailable = Number(yield);
+    let gathered = 0;
     let days = 0;
-    do {
-        total += initialYield - 26;
-        initialYield-=10;
+
+    while (spiceAvailable >= 100) {
+        gathered += spiceAvailable - 26;
+        spiceAvailable -= 10;
         days++;
-    } while (initialYield >= 100);
-    if (total >= 26) {
-        total -= 26;
     }
-    console.log(days);
-    console.log(total);
+
+    if (gathered - 26 > 0) {
+        gathered -= 26;
+    }
+
+    console.log(`${days}\n${gathered}`);
+
 }
+spiceFlow(450);
