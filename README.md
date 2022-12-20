@@ -1,2 +1,2 @@
 # SoftUni Javascript Fundamentals
- Sources related to SoftUni education
+ Source codes related to SoftUni education tasks
