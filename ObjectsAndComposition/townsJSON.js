@@ -1,4 +1,3 @@
-// 33/100 more work is required
 function towns(townsInfo) {
     // Variable declarations
     let towns = [];
@@ -6,17 +5,16 @@ function towns(townsInfo) {
     // Discarding the first element of the input as it's not required for the functionality
     townsInfo.shift();
 
-    let townInfoPattern = new RegExp(/\| (?<town>[A-Za-z -]+) \| (?<latitude>\d+\.?\d*) \| (?<longitude>\d+\.?\d*) \|/);
+    // let townInfoPattern = new RegExp(/\| (?<town>[A-Za-z ]+) \| (?<latitude>\d+\.?\d*) \| (?<longitude>\d+\.?\d*) \|/);
 
     for (const town of townsInfo) {
-        let townCheck = townInfoPattern.exec(town);
-        if (townCheck) {
-            let [name, latitude, longitude] = [townCheck[1], townCheck[2], townCheck[3]];
+        let temp = town.split('|');
+        let [name, latitude, longitude] = [temp[1], temp[2], temp[3]];
+        name = name.trim();
+        latitude = Number((+latitude.trim()).toFixed(2));
+        longitude = Number((+longitude.trim()).toFixed(2));
 
-            latitude = Math.round(latitude * 100) / 100;
-            longitude = Math.round(longitude * 100) / 100;
-            towns.push(createTownObject(name, latitude, longitude));
-        }
+        towns.push(createTownObject(name, latitude, longitude));
     }
 
     console.log(JSON.stringify(towns));
@@ -33,6 +31,6 @@ function towns(townsInfo) {
 
 towns([
     '| Town | Latitude | Longitude |',
-    '| Veliko Petrohansko-Hanche | 42.696552 | 23.32601 |',
+    '| Veliko Petrohansko | 42.696552 | 23.32601 |',
     '| Beijing | 39.913818 | 116.363625 |'
 ]);
