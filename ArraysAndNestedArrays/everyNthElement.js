@@ -1,9 +1,9 @@
 function everyNthElement(arr, n) {
-    let nthArray = [];
-    
-    for (var i = 0; i < arr.length; i+=n) {
-      if (arr[i]) nthArray.push(arr[i]);
-    }
-  
-    return nthArray;
+  let nthArray = [];
+
+  for (let i = 0; i < arr.length; i += n) {
+    if (arr[i]) nthArray.push(arr[i]);
   }
+
+  return nthArray;
+}
