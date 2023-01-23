@@ -29,6 +29,10 @@ function solve() {
     }
   }
 
-  console.log(paragraphs);
+  for (const paragraph of paragraphs) {
+    let element = document.createElement('p');
+    element.innerHTML = paragraph;
+    outputArea.appendChild(element);
+  }
 
 }
