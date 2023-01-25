@@ -1,87 +1,75 @@
+// 72/100 
 function solve() {
    document.querySelector('#btnSend').addEventListener('click', onClick);
 
    function onClick () {
-      const textAreaValue = document.querySelector('#inputs > textarea').value;
-      const outputRestaurant = document.querySelector('#outputs > #bestRestaurant > p');
-      const outputWorkers = document.querySelector('#outputs > #workers > p');
-      let data = JSON.parse(textAreaValue);
-      let restaurants = [];
-      let sortedWorkers;
+      const textarea = document.querySelector('#inputs > textarea');
+      const userInput = JSON.parse(textarea.value);
+      let restaurants = {};
 
-      for (let el of data) {
-         let [restaurantName, workers] = el.split(' - ');
-         let restaurantWorkers =  workers.split(', ');
-         let averageSalary = Math.round(averageRestaurantSalary(restaurantWorkers) * 100) / 100;
-         let bestSalary = fetchBestSalary(restaurantWorkers);
-         sortedWorkers = generateWorkersObject(restaurantWorkers);
+      // Generate the restaurants object with their workers and their salaries
+      for (const entry of userInput) {
+         let [restaurantName, workersData] = entry.split(' - ');
 
-         restaurants.push(generateRestaurantStatsObject(restaurantName, sortedWorkers, averageSalary, bestSalary));
+         restaurants[restaurantName] = {};
+         restaurants[restaurantName].name = restaurantName;
+         restaurants[restaurantName].workers = generateSortedWorkersObjects(workersData);
+         restaurants[restaurantName].averageSalary = calculateAverageSalary(restaurants[restaurantName].workers);
+         restaurants[restaurantName].bestSalary = restaurants[restaurantName].workers[0].salary;
       }
 
-      restaurants.sort((a, b) => {
+      // Convert the restaurants object into an array and sort members by average salary
+      let restaurantsArray = Object.values(restaurants);
+
+      restaurantsArray.sort((a, b) => {
          return b.averageSalary - a.averageSalary;
       });
 
-      let bestRestaurant = `Name: ${restaurants[0].name} Average Salary: ${restaurants[0].averageSalary.toFixed(2)} Best Salary: ${restaurants[0].bestSalary.toFixed(2)}`;
+      // Inject the data into the DOM
+      generateDOMElements(restaurantsArray[0]);
+   }
 
-      outputRestaurant.innerHTML = bestRestaurant;
-
+   function generateDOMElements(restaurantInformation) {
+      const bestRestaurantArea = document.querySelector('#outputs > #bestRestaurant > p');
+      const workersArea = document.querySelector('#outputs > #workers > p');
+      let bestRestaurantString = `Name: ${restaurantInformation.name} Average Salary: ${restaurantInformation.averageSalary.toFixed(2)} Best Salary: ${restaurantInformation.bestSalary.toFixed(2)}`;
       let workersString = '';
 
-      for (const worker of sortedWorkers) {
+      bestRestaurantArea.textContent = bestRestaurantString;
+
+      for (const worker of restaurantInformation.workers) {
          workersString += `Name: ${worker.name} With Salary: ${worker.salary} `;
       }
 
-      outputWorkers.innerHTML = workersString.trim();
-      
+      workersArea.textContent = workersString.trim();
+
    }
 
-   function averageRestaurantSalary(workersArray) {
-      let total = 0;
-      let workersCount = workersArray.length;
+   function generateSortedWorkersObjects(workersString) {
+      let workersArray = [];
 
-      for (const worker of workersArray) {
-         let [name, salary] = worker.split(' ');
-         total += Number(salary);
-      }
-
-      return total / workersCount;
-   }
-
-   function fetchBestSalary(workersArray) {
-      let bestSalary = [];
-
-      for (const worker of workersArray) {
-         bestSalary.push(Number(worker.split(' ')[1]));
-      }
-
-      return Math.max(...bestSalary);
-   }
-
-   function generateWorkersObject(workersArray) {
-      let workers = [];
-
-      for (const worker of workersArray) {
+      for (const worker of workersString.split(', ')) {
          let [name, salary] = worker.split(' ');
 
-         workers.push({ 'name': name, 'salary': Number(salary)});
+         workersArray.push({'name': name, 'salary': Number(salary)});
       }
 
-      workers.sort((a, b) => {
+      workersArray.sort((a, b) => {
          return b.salary - a.salary;
       });
 
-      return workers;
+      return workersArray;
    }
 
-   function generateRestaurantStatsObject(name, workers, averageSalary, bestSalary) {
-      return {
-         name,
-         workers,
-         bestSalary,
-         averageSalary
+   function calculateAverageSalary(workersArray) {
+      let workersCount = workersArray.length;
+      let total = 0;
+
+      for (const worker of workersArray) {
+         total += worker.salary;
       }
+
+      return total / workersCount;
    }
 }
 
