@@ -1,4 +1,3 @@
-// 72/100 
 function solve() {
    document.querySelector('#btnSend').addEventListener('click', onClick);
 
@@ -8,6 +7,7 @@ function solve() {
       let restaurants = {};
 
       // Generate the restaurants object with their workers and their salaries
+      let addedPosition = 0;
       for (const entry of userInput) {
          let [restaurantName, workersData] = entry.split(' - ');
 
@@ -16,10 +16,15 @@ function solve() {
          restaurants[restaurantName].workers = generateSortedWorkersObjects(workersData);
          restaurants[restaurantName].averageSalary = calculateAverageSalary(restaurants[restaurantName].workers);
          restaurants[restaurantName].bestSalary = restaurants[restaurantName].workers[0].salary;
+         restaurants[restaurantName].position = addedPosition++;
       }
 
       // Convert the restaurants object into an array and sort members by average salary
       let restaurantsArray = Object.values(restaurants);
+
+      restaurantsArray.sort((a, b) => {
+         return a.addedPosition - b.addedPosition;
+      })
 
       restaurantsArray.sort((a, b) => {
          return b.averageSalary - a.averageSalary;
@@ -72,8 +77,3 @@ function solve() {
       return total / workersCount;
    }
 }
-
-// Dummy data
-// ["PizzaHut - Peter 500, George 300, Mark 800", "TheLake - Bob 1300, Joe 780, Jane 660"]
-// 
-// ["Mikes - Steve 1000, Ivan 200, Paul 800","Fleet - Maria 850, Janet 650"]
