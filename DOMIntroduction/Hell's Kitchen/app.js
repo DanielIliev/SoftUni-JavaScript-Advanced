@@ -11,12 +11,18 @@ function solve() {
       for (const entry of userInput) {
          let [restaurantName, workersData] = entry.split(' - ');
 
-         restaurants[restaurantName] = {};
-         restaurants[restaurantName].name = restaurantName;
-         restaurants[restaurantName].workers = generateSortedWorkersObjects(workersData);
-         restaurants[restaurantName].averageSalary = calculateAverageSalary(restaurants[restaurantName].workers);
-         restaurants[restaurantName].bestSalary = restaurants[restaurantName].workers[0].salary;
-         restaurants[restaurantName].position = addedPosition++;
+         if (restaurants[restaurantName]) {
+            restaurants[restaurantName].workers = generateSortedWorkersObjects(workersData);
+            restaurants[restaurantName].averageSalary = calculateAverageSalary(restaurants[restaurantName].workers);
+            restaurants[restaurantName].bestSalary = restaurants[restaurantName].workers[0].salary;
+         } else {
+            restaurants[restaurantName] = {};
+            restaurants[restaurantName].name = restaurantName;
+            restaurants[restaurantName].workers = generateSortedWorkersObjects(workersData);
+            restaurants[restaurantName].averageSalary = calculateAverageSalary(restaurants[restaurantName].workers);
+            restaurants[restaurantName].bestSalary = restaurants[restaurantName].workers[0].salary;
+            restaurants[restaurantName].position = addedPosition++;
+         }
       }
 
       // Convert the restaurants object into an array and sort members by average salary
@@ -29,6 +35,8 @@ function solve() {
       restaurantsArray.sort((a, b) => {
          return b.averageSalary - a.averageSalary;
       });
+
+      console.log(restaurantsArray);
 
       // Inject the data into the DOM
       generateDOMElements(restaurantsArray[0]);
@@ -77,3 +85,6 @@ function solve() {
       return total / workersCount;
    }
 }
+
+// Dummy input
+// ["PizzaHut - Peter 500, George 300, Mark 800", "TheLake - Bob 1300, Joe 780, Jane 660", "TheLake - Bob 1300, Joe 780, Jane 660, Richard 1000, Andrew 1600"]
