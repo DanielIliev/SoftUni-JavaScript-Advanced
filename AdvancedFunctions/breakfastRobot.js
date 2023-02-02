@@ -7,10 +7,10 @@ function generateBreakfastRobotFunc() {
         'turkey': { 'protein': 10, 'carbohydrate': 10, 'fat': 10, 'flavour': 10 },
     }
 
-    this.protein = 0;
-    this.carbohydrate = 0;
-    this.fat = 0;
-    this.flavour = 0;
+    protein = 0;
+    carbohydrate = 0;
+    fat = 0;
+    flavour = 0;
 
     const manager = (command) => {
         let [commandType, item, quantity] = command.split(' ');
@@ -25,7 +25,7 @@ function generateBreakfastRobotFunc() {
                 output = prepare(item, quantity);
                 break;
             case 'report':
-                output = `protein=${this.protein} carbohydrate=${this.carbohydrate} fat=${this.fat} flavour=${this.flavour}`;
+                output = `protein=${protein} carbohydrate=${carbohydrate} fat=${fat} flavour=${flavour}`;
                 break;
             default:
                 break;
@@ -36,16 +36,16 @@ function generateBreakfastRobotFunc() {
         function restock(itemName, quantity) {
             switch (itemName) {
                 case 'protein':
-                    this.protein += Number(quantity);
+                    protein += Number(quantity);
                     break;
                 case 'carbohydrate':
-                    this.carbohydrate += Number(quantity);
+                    carbohydrate += Number(quantity);
                     break;
                 case 'fat':
-                    this.fat += Number(quantity);
+                    fat += Number(quantity);
                     break;
                 case 'flavour':
-                    this.flavour += Number(quantity);
+                    flavour += Number(quantity);
                     break;
                 default:
                     break;
@@ -54,30 +54,30 @@ function generateBreakfastRobotFunc() {
 
         function prepare(itemName, quantity) {
             const itemToPrepare = recipes[itemName];
-            const [protein, carbohydrate, fat, flavour] = [itemToPrepare.protein * quantity, itemToPrepare.carbohydrate * quantity, itemToPrepare.fat * quantity, itemToPrepare.flavour * quantity];
+            const [proteinNeeded, carbohydrateNeeded, fatNeeded, flavourNeeded] = [itemToPrepare.protein * quantity, itemToPrepare.carbohydrate * quantity, itemToPrepare.fat * quantity, itemToPrepare.flavour * quantity];
 
-            if (this.protein - protein < 0) {
+            if (protein - proteinNeeded < 0) {
                 return 'Error: not enough protein in stock';
             } else {
-                this.protein -= protein;
+                protein -= proteinNeeded;
             }
 
-            if (this.carbohydrate - carbohydrate < 0) {
+            if (carbohydrate - carbohydrateNeeded < 0) {
                 return 'Error: not enough carbohydrate in stock';
             } else {
-                this.carbohydrate -= carbohydrate;
+                carbohydrate -= carbohydrateNeeded;
             }
 
-            if (this.fat - fat < 0) {
+            if (fat - fatNeeded < 0) {
                 return 'Error: not enough fat in stock';
             } else {
-                this.fat -= fat;
+                fat -= fatNeeded;
             }
 
-            if (this.flavour - flavour < 0) {
+            if (flavour - flavourNeeded < 0) {
                 return 'Error: not enough flavour in stock';
             } else {
-                this.flavour -= flavour;
+                flavour -= flavourNeeded;
             }
 
             return 'Success';
