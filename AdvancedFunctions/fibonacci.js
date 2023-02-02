@@ -1,14 +1,23 @@
-// More debugging required
 function getFibonator() {
-    this.previousPrev = 0;
-    this.prev = 1;
+    this.firstFibReturned = false;
+    this.firstNumber = 0;
+    this.secondNumber = 1;
 
     const nextFibonacci = () => {
-        let currentFibonacci = this.previousPrev + this.prev;
+        let currentFibonacci = 1;
 
-        return currentFibonacci;    
+        if (this.firstFibReturned === false) {
+            currentFibonacci = 1;
+            this.firstFibReturned = true;
+        } else {
+            currentFibonacci = this.firstNumber + this.secondNumber;
+            this.firstNumber = secondNumber;
+            this.secondNumber = currentFibonacci;
+        }
+
+        return currentFibonacci;
     };
-   
+
     return nextFibonacci;
 }
 
