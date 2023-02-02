@@ -1,18 +1,18 @@
 function getFibonator() {
-    this.firstFibReturned = false;
-    this.firstNumber = 0;
-    this.secondNumber = 1;
+    let firstFibReturned = false;
+    let firstNumber = 0;
+    let secondNumber = 1;
 
     const nextFibonacci = () => {
         let currentFibonacci = 1;
 
-        if (this.firstFibReturned === false) {
+        if (firstFibReturned === false) {
             currentFibonacci = 1;
-            this.firstFibReturned = true;
+            firstFibReturned = true;
         } else {
-            currentFibonacci = this.firstNumber + this.secondNumber;
-            this.firstNumber = secondNumber;
-            this.secondNumber = currentFibonacci;
+            currentFibonacci = firstNumber + secondNumber;
+            firstNumber = secondNumber;
+            secondNumber = currentFibonacci;
         }
 
         return currentFibonacci;
