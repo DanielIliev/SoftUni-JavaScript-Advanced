@@ -1,8 +1,8 @@
 function solution(num) {
-    this.num = num;
+    let sum = num;
 
     const add = (newNum) => {
-        return this.num + Number(newNum);
+        return sum + Number(newNum);
     }
 
     return add;

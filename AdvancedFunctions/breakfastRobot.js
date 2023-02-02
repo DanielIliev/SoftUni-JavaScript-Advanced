@@ -7,10 +7,10 @@ function generateBreakfastRobotFunc() {
         'turkey': { 'protein': 10, 'carbohydrate': 10, 'fat': 10, 'flavour': 10 },
     }
 
-    protein = 0;
-    carbohydrate = 0;
-    fat = 0;
-    flavour = 0;
+    let protein = 0;
+    let carbohydrate = 0;
+    let fat = 0;
+    let flavour = 0;
 
     const manager = (command) => {
         let [commandType, item, quantity] = command.split(' ');
