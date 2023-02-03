@@ -1,25 +1,22 @@
-// 66/100 more debugging is required
 const { expect } = require('chai');
 const lookupChar = require('./lookupChar');
 
 describe('character lookup test', function () {
     it('Invalid argument types', () => {
-        const str = 1;
-        const invalidStr = '1';
-        const validIndex = str.length - 1;
-        const indexString = 'a';
-        const negativeIndex = -1;
-        const floatIndex = 1.1;
-        expect(lookupChar(str, indexString)).to.equal(undefined);
-        expect(lookupChar(str, negativeIndex)).to.equal(undefined);
-        expect(lookupChar(str, floatIndex)).to.equal(undefined);
-        expect(lookupChar(invalidStr, validIndex));
+        const invalidString = 1;
+        const invalidIndex = NaN;
+        const invalidFloatIndex = 1.1;
+        expect(lookupChar(invalidString, 0)).to.equal(undefined);
+        expect(lookupChar('a', invalidIndex)).to.equal(undefined);
+        expect(lookupChar('a', invalidFloatIndex)).to.equal(undefined);
     });
 
     it('Index value bigger than string length', () => {
-        const str = 'a';
-        const index = str.length + 1;
-        expect(lookupChar(str, index)).to.equal('Incorrect index');
+        const validString = 'a';
+        const invalidIndexSize = validString.length + 1;
+        const negativeIndex = -1;
+        expect(lookupChar(validString, invalidIndexSize)).to.equal('Incorrect index');
+        expect(lookupChar(validString, negativeIndex)).to.equal('Incorrect index');
     });
 
     it('Correct arguments', () => {
@@ -27,5 +24,4 @@ describe('character lookup test', function () {
         const index = 0;
         expect(lookupChar(str, index)).to.equal(str[index]);
     });
-    
 });
