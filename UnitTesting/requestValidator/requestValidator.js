@@ -46,6 +46,7 @@ function requestValidator(requestObj) {
     }
 
     // Message check
+    const invalidMessagePattern = new RegExp(/[^<>'"&\\]/, 'g');
     if (requestObj.hasOwnProperty('message')) {
         const msg = requestObj['message'];
         if (msg.includes('<') || msg.includes('>') || msg.includes('\\') || msg.includes('&') || msg.includes("'") || msg.includes('"')) {
@@ -60,7 +61,7 @@ function requestValidator(requestObj) {
 
 const result = requestValidator({
     method: 'GET',
-    uri: '',
+    uri: 'asdf',
     version: 'HTTP/1.1',
     message: ''
 });
