@@ -1,15 +1,21 @@
 function lockedProfile() {
-    // let test = document.getElementById('user1HiddenFields');
-    // test.style.display = 'block';
-    // console.log(window.getComputedStyle(test).display);
-
     const showMoreButtons = Array.from(document.querySelectorAll('.profile > button'));
 
     for (let index = 0; index < showMoreButtons.length; index++) {
-        showMoreButtons[index].setAttribute('id', index);
-
         showMoreButtons[index].addEventListener('click', (e) => {
-            console.log(e.target.id);
+            const [locked, unlocked] = Array.from(e.target.parentElement.querySelectorAll('input[type="radio"]'));
+            const hiddenInfoArea = document.getElementById(`user${index + 1}HiddenFields`);
+            let hiddenAreaStyle = window.getComputedStyle(hiddenInfoArea).display;
+
+            if (locked.checked === false) {
+                if (hiddenAreaStyle === 'block') {
+                    hiddenInfoArea.style.display = 'none';
+                    e.target.textContent = 'Show more';
+                } else {
+                    hiddenInfoArea.style.display = 'block';
+                    e.target.textContent = 'Hide it';
+                }
+            }
         });
     }
 }
