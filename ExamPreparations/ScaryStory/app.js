@@ -1,131 +1,100 @@
-// 91/100
 window.addEventListener("load", solve);
 
-function solution() {
-  const mainBlock = document.getElementById('main');
-  const formBlock = document.querySelector('.form-wrapper');
-  const sideBlock = document.querySelector('#side-wrapper');
-  const previewBlock = document.getElementById('preview-list');
-  const authorFirstNameField = document.getElementById('first-name');
-  const authorLastNameField = document.getElementById('last-name');
-  const authorAgeField = document.getElementById('age');
-  const storyTitleField = document.getElementById('story-title');
-  const storyGenreField = document.getElementById('genre');
-  const storyContent = document.getElementById('story');
-  const publishButton = document.getElementById('form-btn');
+function solve() {
+  const main = document.getElementById('main');
+  const firstName = document.getElementById('first-name');
+  const lastName = document.getElementById('last-name');
+  const age = document.getElementById('age');
+  const storyTitle = document.getElementById('story-title');
+  const genre = document.getElementById('genre');
+  const story = document.getElementById('story');
+  const submitBtn = document.getElementById('form-btn');
+  const previewList = document.getElementById('preview-list');
 
-  let currentStoryInformation = {
-    firstName: '',
-    lastName: '',
-    age: 0,
-    title: '',
-    genre: '',
-    content: ''
-  }
-
-  publishButton.addEventListener('click', () => {
-    // Save story information if there are no empty fields
-    if (authorFirstNameField.value && authorLastNameField.value && authorAgeField.value && storyTitleField.value && storyContent.value) {
-      currentStoryInformation.firstName = authorFirstNameField.value;
-      currentStoryInformation.lastName = authorLastNameField.value;
-      currentStoryInformation.age = authorAgeField.value;
-      currentStoryInformation.title = storyTitleField.value;
-      currentStoryInformation.genre = storyGenreField.value;
-      currentStoryInformation.content = storyContent.value;
-
+  submitBtn.addEventListener('click', (e) => {
+    if (firstName.value && lastName.value && age.value && storyTitle.value && story.value) {
+      addStory(e, firstName.value, lastName.value, age.value, genre.value, storyTitle.value, story.value);
       clearFields();
-      generateDOM();
     }
   });
 
-  function generateDOM() {
-    // Create the list item
-    const storyBlock = document.createElement('li');
-    storyBlock.classList.add('story-info');
+  function addStory(e, _firstName, _lastName, _age, _genre, _storyTitle, _story) {
+    e.preventDefault();
 
-    // Create the article and append the required data to it
-    const articleBlock = document.createElement('article');
-    const authorName = document.createElement('h4');
-    const authorAge = document.createElement('p');
-    const storyTitle = document.createElement('p');
-    const storyGenre = document.createElement('p');
-    const storyContent = document.createElement('p');
+    const li = createElement('li', '', previewList);
+    li.setAttribute('class', 'story-info');
+    const article = createElement('article', '', li);
+    createElement('h4', `Name: ${_firstName} ${_lastName}`, article);
+    createElement('p', `Age: ${_age}`, article);
+    createElement('p', `Title: ${_storyTitle}`, article);
+    createElement('p', `Genre: ${_genre}`, article);
+    createElement('p', `${_story}`, article);
 
-    authorName.textContent = 'Name: ' + currentStoryInformation.firstName + currentStoryInformation.lastName;
-    authorAge.textContent = 'Age: ' + currentStoryInformation.age;
-    storyTitle.textContent = 'Title: ' + currentStoryInformation.title;
-    storyGenre.textContent = 'Genre: ' + currentStoryInformation.genre;
-    storyContent.textContent = currentStoryInformation.content;
+    let saveBtn = createElement('button', 'Save Story', li);
+    saveBtn.setAttribute('class', 'save-btn');
+    let editBtn = createElement('button', 'Edit Story', li);
+    editBtn.setAttribute('class', 'edit-btn');
+    let deleteBtn = createElement('button', 'Delete Story', li);
+    deleteBtn.setAttribute('class', 'delete-btn');
 
+    saveBtn.addEventListener('click', (e) => saveStory(e)); //Maybe more arguments
 
-    articleBlock.appendChild(authorName);
-    articleBlock.appendChild(authorAge);
-    articleBlock.appendChild(storyTitle);
-    articleBlock.appendChild(storyGenre);
-    articleBlock.appendChild(storyContent);
+    editBtn.addEventListener('click', (e) => editStory(e, _firstName, _lastName, _age, _genre, _storyTitle, _story, saveBtn, deleteBtn));
 
-    // Create the action buttons and append them to the article
-    const saveBtn = document.createElement('button');
-    const editBtn = document.createElement('button');
-    const deleteBtn = document.createElement('button');
+    deleteBtn.addEventListener('click', (e) => deleteStory(e));
 
-    saveBtn.textContent = 'Save Story';
-    editBtn.textContent = 'Edit Story';
-    deleteBtn.textContent = 'Delete Story';
+    submitBtn.setAttribute('disabled', 'true');
 
-    saveBtn.classList.add('save-btn');
-    editBtn.classList.add('edit-btn');
-    deleteBtn.classList.add('delete-btn');
+    editBtn.removeAttribute('disabled');
+    saveBtn.removeAttribute('disabled');
+    deleteBtn.removeAttribute('disabled');
+  }
 
-    // Save story
-    saveBtn.addEventListener('click', function () {
-      mainBlock.removeChild(sideBlock);
-      mainBlock.removeChild(formBlock);
+  function editStory(e, _firstName, _lastName, _age, _genre, _storyTitle, _story, _saveBtn, _deleteBtn) {
+    e.preventDefault();
 
-      const savedStoryText = document.createElement('h1');
+    e.target.setAttribute('disabled', 'true');
+    _saveBtn.setAttribute('disabled', 'true');
+    _deleteBtn.setAttribute('disabled', 'true');
 
-      savedStoryText.textContent = 'Your scary story is saved!';
-      mainBlock.appendChild(savedStoryText);
-    });
+    firstName.value = _firstName;
+    lastName.value = _lastName;
+    age.value = _age;
+    genre.value = _genre;
+    storyTitle.value = _storyTitle;
+    story.value = _story;
 
-    // Edit story
-    editBtn.addEventListener('click', function () {
-      previewBlock.removeChild(storyBlock);
-      setFields();
-      publishButton.removeAttribute('disabled');
-    });
+    e.target.parentNode.remove();
+    submitBtn.removeAttribute('disabled');
+  }
 
-    // Delete story
-    deleteBtn.addEventListener('click', function () {
-      previewBlock.removeChild(storyBlock);
-      publishButton.removeAttribute('disabled');
-      clearFields();
-    });
+  function saveStory(e) {
+    document.getElementById('side-wrapper').remove();
+    document.querySelector('.form-wrapper').remove();
+    
+    createElement('h1', 'Your scary story is saved!', main);
+  }
 
-    // Append the article to the list item and itself to the preview block
-    storyBlock.appendChild(articleBlock);
-    storyBlock.appendChild(saveBtn);
-    storyBlock.appendChild(editBtn);
-    storyBlock.appendChild(deleteBtn);
-    previewBlock.appendChild(storyBlock);
+  function deleteStory(e) {
+    e.target.parentNode.remove();
+    submitBtn.removeAttribute('disabled');
+  }
 
-    // Disable the publish button on click
-    publishButton.setAttribute('disabled', 'true');
+  function createElement(type, content, parent) {
+    const element = document.createElement(type);
+
+    element.textContent = content;
+
+    if (parent) parent.appendChild(element);
+
+    return element;
   }
 
   function clearFields() {
-    authorFirstNameField.value = '';
-    authorLastNameField.value = '';
-    authorAgeField.value = '';
-    storyTitleField.value = '';
-    storyContent.value = '';
-  }
-
-  function setFields() {
-    authorFirstNameField.value = currentStoryInformation.firstName;
-    authorLastNameField.value = currentStoryInformation.lastName;
-    authorAgeField.value = currentStoryInformation.age;
-    storyTitleField.value = currentStoryInformation.title;
-    storyContent.value = currentStoryInformation.content;
+    firstName.value = '';
+    lastName.value = '';
+    age.value = '';
+    storyTitle.value = '';
+    story.value = '';
   }
 }
