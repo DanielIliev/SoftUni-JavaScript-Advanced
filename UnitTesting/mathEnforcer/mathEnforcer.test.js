@@ -1,23 +1,51 @@
+// 71/100
 const { expect } = require('chai');
-const { addFive, subtractTen, sum } = require('./mathEnforcer');
+const mathEnforcer = require('./mathEnforcer');
 
-describe('math enforce checker', function() {
-    it('non-number argument', () => {
-        const invalidArgument1 = NaN;
-        const invalidArgument2 = NaN;
-
-        expect(addFive(invalidArgument1)).to.equal(undefined);
-        expect(subtractTen(invalidArgument1)).to.equal(undefined);
-        expect(sum(invalidArgument1, invalidArgument2)).to.equal(undefined);
+describe('math enforce tests', function () {
+    describe('addFive', () => {
+        it('invalid argument (not a number)', () => {
+            expect(mathEnforcer.addFive('1')).to.equal(undefined);
+        });
+        it('valid argument', () => {
+            expect(mathEnforcer.addFive(1)).to.equal(6);
+        });
+        it('valid argument (negative number)', () => {
+            expect(mathEnforcer.addFive(-1)).to.equal(4);
+        });
     });
-
-    it('correct arguments', function() {
-        const validArgument1 = 1;
-        const validArgument2 = 1;
-
-        expect(addFive(validArgument1)).to.equal(validArgument1 + 5);
-        expect(subtractTen(validArgument2)).to.equal(validArgument1 - 10);
-        expect(sum(validArgument1, validArgument2)).to.equal(validArgument1 + validArgument2);
+    describe('subtractTen', () => {
+        it('invalid argument (not a number)', () => {
+            expect(mathEnforcer.subtractTen('1')).to.equal(undefined);
+        });
+        it('valid argument', () => {
+            expect(mathEnforcer.subtractTen(1)).to.equal(-9);
+        });
+        it('valid argument (negative number)', () => {
+            expect(mathEnforcer.subtractTen(-1)).to.equal(-11);
+        });
     });
-
+    describe('sum', () => {
+        it('invalid argument1 (not a number)', () => {
+            expect(mathEnforcer.sum('1', 0)).to.equal(undefined);
+        });
+        it('invalid argument2 (not a number)', () => {
+            expect(mathEnforcer.sum(1, '1')).to.equal(undefined);
+        });
+        it('invalid argument1 (not a number)', () => {
+            expect(mathEnforcer.sum('1', -1)).to.equal(undefined);
+        });
+        it('invalid argument2 (not a number)', () => {
+            expect(mathEnforcer.sum(-1, '1')).to.equal(undefined);
+        });
+        it('valid arguments', () => {
+            expect(mathEnforcer.sum(1, 1)).to.equal(2);
+        });
+        it('valid arguments (first is negative)', () => {
+            expect(mathEnforcer.sum(-1, 1)).to.equal(0);
+        });
+        it('valid arguments (second is negative)', () => {
+            expect(mathEnforcer.sum(1, -1)).to.equal(0);
+        });
+    });
 });
